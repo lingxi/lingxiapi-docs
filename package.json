@@ -1,7 +1,7 @@
 {
   "name": "lingxiapi-docs",
-  "version": "0.0.1",
-  "main": "index.js",
+  "version": "0.0.2",
+  "main": "lib/main.js",
   "repository": "git@github.com:LingxiTeam/lingxiapi-docs.git",
   "author": "RryLee <qq215672398@126.com>",
   "license": "MIT",

@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-
 if (process.argv.length < 4) {
   console.log('参数不对')
   process.exit(1)
