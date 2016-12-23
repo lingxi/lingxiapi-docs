@@ -1,0 +1,15 @@
+{
+  "name": "lingxiapi-docs",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:LingxiTeam/lingxiapi-docs.git",
+  "author": "RryLee <qq215672398@126.com>",
+  "license": "MIT",
+  "dependencies": {
+    "aglio": "^2.3.0",
+    "cheerio": "^0.22.0"
+  },
+  "bin": {
+    "lingxiapi": "bin/parser"
+  }
+}

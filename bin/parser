@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+
+
+if (process.argv.length < 4) {
+  console.log('参数不对')
+  process.exit(1)
+}
+
+const input = process.argv[2]
+const output = process.argv[3]
+
+const cheerio = require('cheerio')
+const aglio = require('aglio')
+const fs = require('fs')
+
+const options = {
+  themeVariables: 'streak',
+  themeTemplate: __dirname + '/../templates/index.jade'
+}
+
+fs.readFile(input, 'utf-8', (err, data) => {
+
+  if (err) {
+    console.log('文件读取失败')
+    console.log(err)
+  }
+
+  aglio.render(data, options, (err, html, warnings) => {
+    if (err) return console.log(err);
+
+    fs.writeFileSync(output, '<style>')
+
+    let $ = cheerio.load(html)
+
+    fs.appendFileSync(output, $('style').html())
+    fs.appendFileSync(output, '</style>')
+
+    fs.appendFile(output, $('body').html(), err => {
+      if (err) {
+        return console.log(err)
+      }
+
+      console.log('Success!')
+    })
+
+  })
+
+})
