@@ -1,0 +1,176 @@
+FORMAT: 1A
+HOST: http://apix.lingxi360.com/v1
+
+# 灵析 API 文档(V1)
+
+# Group 开始使用
+
+:::warning
+所有的接口请求链接前缀都需要带上版本号 http://apix.lingxi360.com/v1
+:::
+
+## 接入说明
+
+:::note
+有任何问题请联系官方邮箱 api@justering.com
+:::
+
+
+**调用所有接口，必须包含下面四个参数**
+
+| 字段名称   |  类型  |  说明  |
+| -- | -- | :-- |
+|  api_key  |  string  |  api_key  |
+| stamp   |  int  |  发送请求的时间，UNIX时间戳  |
+|  noncestr  |  string  |  随机字符串  |
+|  signature  |  string  |  签名  |
+
+**signature 的验证方式**
+
+- 首先验证时间戳是否在当前时间 600s 内
+- 其次验证 signature 是否正确
+
+**signature 参数生成步骤**
+
+* 设所有需要发送的数据为集合M，在集合M中增加当前时间戳stamp，随机字符串noncestr以及机构的api_key，然后将集合M内非空参数值（或空数组）的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串stringA。
+* 对stringA进行sha256哈希计算，秘钥api_secret，得到signature值
+
+**signature 参数验证步骤**
+
+* 设所有接收到的数据为集合M，将集合M内非空参数值（或空数组）的参数按照参数名ASCII码从小到大排序（字典序），使用URL键值对的格式（即key1=value1&key2=value2…）拼接成字符串stringA。
+* 对stringA进行sha256哈希计算，秘钥api_secret，得到signature值
+
+**验证和生成签名特别注意以下重要规则**
+
+* 参数名ASCII码从小到大排序（字典序）；
+* 如果参数的值为空（或空数组）不参与签名；
+* 参数名区分大小写；
+* 验证调用返回或微信主动通知签名时，传送的signature参数不参与签名，将生成的签名与该signature参数值作校验。
+* 接口可能会增加字段，验证签名时必须支持增加的扩展字段
+
+
+**获取 api_key 和 api_secret**
+
+灵析系统会为每个灵析账户分配一个api_key和api_secret, 请向灵析技术人员索取
+
+<br/>
+
+## 参数及返回类型说明
+
+**分页参数**
+
+| 字段名称 | 类型 | 说明 | 默认 |
+| :-- | -- |:-- | :-- |
+| min_time   |  int  |  资源的最小创建时间，UNIX时间戳  | 默认不参与分页限制 |
+|  min_time  |  int  |  资源的最大创建时间，UNIX时间戳  | 默认不参与分页限制 |
+|  page  |  int  |  分页页面  | 1 |
+|  per_page  |  int  |  分页每页记录条数 | **参考具体 api** |
+| order_by | string | 排序方式 | **参考具体 api** |
+| order_sequence | string | 排序方式 | asc, desc 默认为 desc |
+
+**with 参数**
+
+使用接口给出的 with 参数获取资源的其他信息
+
+比如
+
+    donate/?with=user,project
+
+表示去获取 donate 的同时带上 user 和 project 信息
+
+**返回数据格式**
+
+> 请求单个数据接口
+
+```json
+{
+  "data": {
+    "type": "event",
+    "id": "cam7klxnremov5gydo1019z84pwq237o",
+    "attributes": {
+
+    }
+  }
+}
+```
+
+> 统计数据
+
+```json
+{
+  "data": {
+
+  }
+}
+```
+
+> 分页数据
+
+```json
+{
+  "meta": {
+    "pagination": {
+      "total": 171,
+      "count": 10,
+      "per_page": 10,
+      "current_page": 1,
+      "total_pages": 18
+    }
+  },
+  "links": {
+    "self": "http://apixtest.lingxi360.com/v1/cf_project/list?page=1",
+    "first": "http://apixtest.lingxi360.com/v1/cf_project/list?page=1",
+    "next": "http://apixtest.lingxi360.com/v1/cf_project/list?page=2",
+    "last": "http://apixtest.lingxi360.com/v1/cf_project/list?page=18"
+  }
+}
+```
+
+:::warning
+后面文档不做特殊说明，默认只说明 attributes 字段含义
+:::
+
+<br/>
+
+## SDK 下载
+
+- php [:link:](https://github.com/LingxiTeam/signature-authenticator)
+
+- node [:link:](https://github.com/RryLee/node-signature-authenticator)
+
+# Data Structures
+
+## NoteList (array)
+
+# Group 测试接口
+
+:::note
+不需要任何验证参数，不产生请求记录
+:::
+
+## 测试调用接口 [/test/fun]
+
+### 测试调用接口 [GET]
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+              "msg": "Hello, Lingxi!!!"
+            }
+
+## 测试参数验证 [/test/auth]
+
+### 测试参数验证 [GET]
+
++ Response 200 (application/json)
+
+  + Body
+
+            {
+              "stamp": "1482473936",
+              "noncestr": "7wXXaVTcRtz6DydF",
+              "api_key": "pj5iHdpka",
+              "signature": "33ef3dc5fb9d74e9c89caea91123bb5705f8e8e9f2823ba7525405cd88e08002"
+            }
