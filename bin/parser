@@ -12,6 +12,12 @@ const cheerio = require('cheerio')
 const aglio = require('aglio')
 const fs = require('fs')
 
+const duoshuo = {
+  'DUOSHUO_KEY': process.argv[4] || '',
+  'DUOSHUO_DATA_TITLE': process.argv[5] || '',
+  'DUOSHUO_DATA_URL': process.argv[6] || ''
+}
+
 const options = {
   themeVariables: 'streak',
   themeTemplate: __dirname + '/../templates/index.jade'
@@ -34,7 +40,12 @@ fs.readFile(input, 'utf-8', (err, data) => {
     fs.appendFileSync(output, $('style').html())
     fs.appendFileSync(output, '</style>')
 
-    fs.appendFile(output, $('body').html(), err => {
+    let body = $('body').html()
+    for (let key in duoshuo) {
+      body = body.replace(RegExp(key), duoshuo[key])
+    }
+
+    fs.appendFile(output, body, err => {
       if (err) {
         return console.log(err)
       }

@@ -5,13 +5,13 @@ include mixins.jade
 html
     head
         meta(charset="utf-8")
-        title= self.api.name || 'API Documentation'
+        title= self.api.name || '灵析 API'
         link(rel="stylesheet", href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css")
         style!= self.css
     body.preload
         a.text-muted.back-to-top(href='#top')
             i.fa.fa-toggle-up
-            | &nbsp;Back to top
+            | &nbsp;回到顶部
         div(class=self.fullWidth ? 'container-fluid' : 'container')
             .row
                 block nav
@@ -20,8 +20,20 @@ html
                 .content
                     block content
                         +Content('primary', false)
+                    .ds-thread(data-thread-key='DUOSHUO_KEY', data-title='DUOSHUO_DATA_TITLE', data-url='DUOSHUO_DATA_URL')
 
         script: include scripts.js
+        script.
+          var duoshuoQuery = {short_name:"lingxiopen"};
+          (function() {
+          var ds = document.createElement('script');
+          ds.type = 'text/javascript';
+          ds.async = true;
+          ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+          ds.charset = 'UTF-8';
+          (document.getElementsByTagName('head')[0]
+          || document.getElementsByTagName('body')[0]).appendChild(ds);
+          })();
 
         // for preview
         if self.livePreview
