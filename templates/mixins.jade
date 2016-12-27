@@ -150,6 +150,7 @@ mixin Content()
     //- Page header and API description
     header
         h1#top!= self.api.name || 'API Documentation'
+        a(class='fa fa-edit', href='GITHUB_FILE_LINK', target='_blank')
 
     if self.api.descriptionHtml
         != self.api.descriptionHtml

@@ -5,21 +5,29 @@ if (process.argv.length < 4) {
   process.exit(1)
 }
 
-const input = process.argv[2]
-const output = process.argv[3]
-
+const path = require('path')
 const cheerio = require('cheerio')
 const aglio = require('aglio')
 const fs = require('fs')
 
+const githubRepoFileLink = 'https://github.com/LingxiTeam/lingxiapi-docs/blob/master/'
+
+const input = process.argv[2]
+const apibName = path.basename(input)
+const output = process.argv[3]
+
 const duoshuo = {
   'DUOSHUO_KEY': process.argv[4] || '',
   'DUOSHUO_DATA_TITLE': process.argv[5] || '',
-  'DUOSHUO_DATA_URL': process.argv[6] || ''
+  'DUOSHUO_DATA_URL': process.argv[6] || '',
+  'GITHUB_FILE_LINK': `${githubRepoFileLink}${apibName}`
 }
 
 const options = {
-  themeVariables: 'streak',
+  themeStyle: [
+    'default',
+    __dirname + '/../styles/rewrite.less'
+  ],
   themeTemplate: __dirname + '/../templates/index.jade'
 }
 

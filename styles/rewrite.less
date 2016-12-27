@@ -1,3 +1,5 @@
+@import "_variable.less";
+
 @media (min-width: 768px) {
   .container {
     width: 750px;
@@ -22,6 +24,14 @@
 .container .row .content {
   padding-left: 40px;
   border-left: 1px solid @greyLighter;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
 }
 
 // 多说评论
