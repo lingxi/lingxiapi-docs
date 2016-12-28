@@ -27,11 +27,25 @@
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-  }
+  // header {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: baseline;
+  // }
+}
+
+// 去掉 pre 边框
+pre {
+  border: none !important;
+}
+
+code {
+    color: #e96900;
+    padding: 3px 5px;
+    margin: 0 2px;
+    border-radius: 2px;
+    white-space: nowrap;
+    border: none !important;;
 }
 
 // 多说评论
@@ -183,4 +197,42 @@
 
 #ds-thread #ds-reset .ds-add-emote:hover {
   background-position: 0px -12px !important;
+}
+
+#ds-thread #ds-reset .ds-account-control {
+  padding-bottom: 0 !important;
+}
+
+// nav
+nav .resource-group {
+  margin-bottom: 0;
+  border-bottom: 1px solid @greyLighter;
+}
+
+nav .resource-group .collapse-content {
+  // padding-left: 10px;
+}
+
+nav .resource-group .heading a {
+  padding-left: 0;
+}
+
+nav .resource-group .heading a:hover,
+nav ul a:hover {
+  text-decoration: none !important;
+}
+
+nav ul a {
+  padding: 5px 12px;
+  border-left-width: 0;
+  &:hover {
+    color: white !important;
+    background: @primary !important;
+    border-left-width: 0 !important;
+  }
+}
+
+.action {
+  margin-top: 30px;
+  margin-bottom: 30px;
 }

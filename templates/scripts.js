@@ -207,7 +207,12 @@ function init() {
         navItems[i].onclick = toggleCollapseNav;
 
         // Show all by default
-        toggleCollapseNav({target: navItems[i].children[0]});
+        // toggleCollapseNav({target: navItems[i].children[0]});
+
+        // I change to show first item
+        if (i === 0) {
+          toggleCollapseNav({target: navItems[0].children[0]});
+        }
     }
 }
 

@@ -140,8 +140,6 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 
 # Data Structures
 
-## NoteList (array)
-
 # Group 测试接口
 
 :::note
@@ -152,7 +150,7 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 
 ### 测试调用接口 [GET]
 
-+ Response 200 (application/json)
++ Response 200
 
   + Body
 
@@ -164,7 +162,7 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 
 ### 测试参数验证 [GET]
 
-+ Response 200 (application/json)
++ Response 200
 
   + Body
 
@@ -174,3 +172,1076 @@ GITHUB_FILE_PATH: http://github.com/rrylee
               "api_key": "pj5iHdpka",
               "signature": "33ef3dc5fb9d74e9c89caea91123bb5705f8e8e9f2823ba7525405cd88e08002"
             }
+
+# Data Structures
+
+# Group 微信授权
+
+## 获取微信授权链接 [/wechat/authorization]
+
+:::note
+### 流程
+- 请求灵析接口 /wechat/authorization
+	- 基本授权（scope=base）：不需要用户确认，只能拿到 openid
+    - 完整用户信息授权（scope=user_info）：需要用户确认授权，能拿到完整用户信息
+- 接口返回授权链接
+- 跳转到授权链接
+- 授权完成，跳转回 callback_url，带有 token、data 两个参数
+	- 首先验证 token，避免中间人攻击或伪造数据
+    - 将 data 做 base64_decode 再做 json_decode，就是授权结果的 json 数组
+    - 验证 status 为 1
+
+### 授权结果解析代码示例
+
+```php
+$token = session('wechat_oauth_token'); // 预先放在 session 里的 token
+if (!$token || $token != $_GET['token']) {
+    die('微信授权失败，请退出后重新尝试。'); // token 错误
+}
+
+$oauthData = json_decode(base64_decode($_GET['data']), true);
+if (!$oauthData || !$oauthData['status']) {
+      die('微信授权失败，请退出后重新尝试。'); // 用户可能拒绝了授权
+}
+```
+
+### 注意事项：
+
+- 调用本接口需要传递一个随机字符串（token），授权完成后会原样返回，通过对比 token，避免中间人攻击
+:::
+
+### 获取微信授权链接 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+|  callback_url  |  &#10004;  |  回调地址  |
+| token   |  &#10004;  |  随机字符串  |
+|  scope  |  &#10004;  |   base, user_info 两种类型  |
+
++ Response 200
+
+  + Body
+
+            http://wxauth.lingxi360.com/index/openid?type=cf&appid=wxd67dc18adf910e3a&redirect_url=http%3A%2F%2Fapix.lingxi360.com%2Fv1%2Fwechat%2Fauthorization%3Fapi_key%3DZq4nS0fJF%26callback_url%3Dexample.com%26noncestr%3DK6lWrP1IqFyHR1oV%26signature%3Df2a16dee417d65a6791089079cfcba87a57bc1812f0bfe1d2e395f50871115f7%26stamp%3D1472111123%26token%3Dadasgdfgdghfghhjkk%26wechat_oauth_scope%3Dsnsapi_base%26token%3Dadasgdfgdghfghhjkk
+
+## 获取 jsticket [/wechat/jsticket]
+
+### 获取 jsticket [GET]
+
++ Response 200
+
+  + Body
+
+            ticket
+
+### 获取 Js SignaturePackage [/wechat/signature_package]
+
+### 获取 Js SignaturePackage [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+|  url  |  &#10004;  |  当前页面 url  |
+
++ Response 200
+
+  + Body
+
+            {
+              "appId": your_app_id,
+              "nonceStr": "rand_57f8b8c......",
+              "timestamp": 1475918016,
+              "url": "http://www.baidu.com",
+              "signature": "74fd54eb1550cb3cf7cc63a9dc9f66c09a80993c"
+            }
+
+# Data Structures
+
+# Group 联系人
+
+## 获取单个联系人 [/contact/show]
+
+### 单个联系人 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+|  cid  |  &#10007;  |  联系人 id  |
+|  wechat_openid  |  &#10007;  |  联系人微信 openid，和 cid 两者必传一个  |
+|  with  |  &#10007;  |  企业-`org`, 附件-`attachments`, 活动统计-`statistics_event`, 捐款统计-`statistics_donate` |
+
++ Response 200
+
+  + Body
+
+            {
+              "name": "京城五",
+              "nickname": "",
+              "member": "",
+              "gender": "",
+              "country": "",
+              "address": "三元桥",
+              "province": "",
+              "zip_code": "",
+              "avatar": "http://wx.qlogo.cn/mmopen/ajNVdqHZLLADwPUGnaAmvzHu3R4sK33OUJnLdqd97GHn2fgjiaiaKvrXs78oYUuFziahlOSCygj1z696I4ian9CACQ/0",
+              "email": "guorunmiao@qq.com",
+              "email2": "",
+              "mobile": "12323234545",
+              "mobile2": "",
+              "birthday": "0000-00-00",
+              "qq": "28223123",
+              "weibo_name": "",
+              "weibo_link": "",
+              "wx_username": "",
+              "org_department": "",
+              "org_position": "",
+              "org_phone": "",
+              "description": "",
+              "create_time": 1403447755,
+              "update_time": 1427448819,
+              "member_donate_count": 0,
+              "member_donate_sum": 0,
+              "member_donate_first_date": 0,
+              "member_credit_score": 0,
+              "org": {
+                "id": "cavl1l5m4zq97xwn0wz023ye8pvrkogz",
+                "name": "灵析",
+                "website": "http://www.lingxi360.com/index.php",
+                "logo": "",
+                "phone": "010-4683670",
+                "fax": "010-64683671",
+                "address": "远洋新干线A座1109",
+                "zipcode": "10027",
+                "email": "hi@lingxi.com",
+                "description": "欢迎大家拍砖、献花和我们约聊······这里是十分热情的灵析团队！",
+                "contact_user": "易昕",
+                "create_user_id": 2,
+                "create_time": 1460638709
+              },
+              "statistics_event": {
+                "count_event": 7,
+                "duration": 16
+              },
+              "statistics_donate": {
+                "count_paid": 1,
+                "sum_paid": "25.00"
+              }
+            }
+
+## 获取联系人参与全部项目 [/contact/cf_project/list]
+
+### 参与项目 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+|  cid  |  &#10004;  |  联系人 id  |
+|  with  |  &#10007;  |  我的捐赠-`donates` 统计信息-`statistics_donate` 其他信息-`components` |
+|  type | &#10007; | 项目类型 单次捐-`singletime` 定期捐-`periodic` |
+|  category_id | &#10007; | 分类 id |
+|  order_by | &#10007; | 我的捐赠-`sum_paid` `create_time` `update_time` |
+
++ Response 200
+
+  + Body
+
+
+            {
+              "type": "singletime",
+              "team_id": "ca7nxo5qvzl9gm10q2vk07w3rp24e8yk",
+              "cid": "ca17nxo5qvzl9gm10q507w3rp24e8ykw",
+              "title": "七夕，给你一个爱的约会",
+              "summary": "",
+              "desc": "<p><span style=\"font-family: 微软雅黑, 'Microsoft YaHei'; line-height: 1.5em;\">嗨，[#姓名#]<br></span></p>",
+              "sequence": "0",
+              "preview_image": "http://file.lxi.me//attachment/2015/0915/4cf0c61a6aa6b26b3e48a17205c44a14.jpg",
+              "is_special": true,
+              "status": "published",
+              "goal": false,
+              "is_donatable": true,
+              "is_together_donatable": false,
+              "create_time": 1442032723,
+              "update_time": 1444878789,
+              "sum_paid": 8.74,
+              "count_user_paid": "10",
+              "components": {
+                "periodic": {
+                  "information": {
+                    "is_enabled": "1",
+                    "options": [
+                      {
+                        "money": "6",
+                        "desc": "一个羊肉串",
+                        "limit_num": "100"
+                      },
+                      {
+                        "money": "8",
+                        "desc": "一串鸡翅",
+                        "limit_num": "100"
+                      },
+                      {
+                        "money": "60",
+                        "desc": "一个靠羊腿",
+                        "limit_num": "100"
+                      }
+                    ],
+                    "is_input_allowed": "false"
+                  }
+                },
+                "donate_certificate": {
+                  "config": {
+                    "is_enable": "0",
+                    "cert_template_id": "0"
+                  }
+                },
+                "goal": {
+                  "is_enable": false,
+                  "is_enable_achieved_donate": false,
+                  "goal_num": 0
+                },
+                "expire": {
+                  "is_enable": false,
+                  "expire_time": 0
+                },
+                "success_number_limit": {
+                  "is_enable": false,
+                  "limit_num": 0
+                }
+              }，
+              "link": "http://cf.lingxi360.com/p/ca512p4q3yewvdk5y3qgodzgl8mknx7r",
+              "donates": [
+                {
+                "id": "carp7vl4kq13904we81ez6m2yxoez5wg",
+                "user_project_id": "caox9g48omp21rydmrwn6vew7n5qkz3l",
+                "project_id": "ca512p4q3yewvdk5y3qgodzgl8mknx7r",
+                "cf_user_id": "canxo5qvzl9gm10qp9lkld7w3rp24e8y",
+                "donate_cf_user_id": "canxo5qvzl9gm10qp9lkld7w3rp24e8y",
+                "contact_id": "capx8v2gr3ymw40557mp309qo571ezkl",
+                "donate_amount": "75.00",
+                "flow_number": "4008632001201608090925588822",
+                "status": "paid",
+                "pay_time": 1470714270,
+                "comment": "",
+                "donate_form_data": {
+                "name": "西桐",
+                "email": "joy_song@126.com",
+                "new_item_1": "",
+                "ip": "10.158.26.1",
+                "browser_user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_3 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13G34 MicroMessenger/6.3.23 NetType/4G Language/zh_CN",
+                "browser_referer": "http://cf.lingxi360.com/up/caox9g48omp21rydmrwn6vew7n5qkz3l?ouid=canxo5qvzl9gm10qp9lkld7w3rp24e8y&from=groupmessage&isappinstalled=0"
+                },
+                "create_time": 1470714252,
+                "update_time": 1470714270
+                }
+              ],
+              "statistics_donate": {
+                "sum": 600,
+                "sum_paid": 600,
+                "count": 8,
+                "count_paid": 8,
+                "count_user": 1,
+                "count_user_paid": 1,
+                "percent": 0,
+                "percent_round": 0,
+                "is_achieved": false,
+                "is_expired": true,
+                "is_over_limit": false,
+                "is_donatable": false
+              }
+            }
+
+## 获取联系人参加的全部定期捐 [/contact/cf_project/periodic_project/list]
+
+### 参与定期捐 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+|  cid  |  &#10007;  |  联系人 id  |
+| wechat_openid | &#10007; | 联系人微信 openid (和 cid 必填一项) |
+|  with  |  &#10007;  |  我的捐赠-`donates` 绑定项目-`project` |
+|  status | &#10007; | 状态 初始化-`inti` 绑定-`binded` 未绑定-`unbind` |
+
++ Response 200
+
+  + Body
+
+
+            {
+              "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2",
+              "interval": "monthly",
+              "donate_amount": "100.00",
+              "status": "binded",
+              "is_anonymous": false,
+              "bind_time": 1462982400,
+              "next_pay_time": 0,
+              "create_time": 1468495900,
+              "update_time": 1468495903,
+              "comment": "",
+              "manage_link": "http://cfnew.lingxi.com/periodic/caz9x45erm3o21kp0g108q9ygw7lvnz2",
+              "donates": [
+                  {
+                      "id": "camrp4nyx9v1wdy321g4v6gzloqk783e",
+                      "project_id": "ca924lkpryz7m38qd97x09vxe2n15wog",
+                      "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm",
+                      "user_project_id": "ca17nxo5qvzl9gm10q507w3rp24e8ykw",
+                      "contact_id": "canrp7vl4kq13904lp8vdm2yxoez5wg8",
+                      "donate_amount": "1.00",
+                      "flow_number": "",
+                      "status": "paid",
+                      "pay_time": 0,
+                      "donate_cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm",
+                      "comment": "",
+                      "create_time": 1442064826,
+                      "update_time": 1442064826
+                  }
+              ],
+              "project": {
+                  "id": "caz9x45erm3o21kp0g108q9ygw7lvnz2",
+                  "type": "periodic",
+                  "title": "清华大学新百年基金",
+                  "summary": "“集资、集智、集力、集心”",
+                  "desc": "<p>This is a demo project!!!</p>",
+                  "preview_image": "http://file.lxi.me/cf/20160513/5735421ae707e.jpg",
+                  "sequence": 24,
+                  "status": "published",
+                  "create_time": 1438845474,
+                  "update_time": 1470294646,
+                  "link": "http://cfnew.lingxi.com/p/caz9x45erm3o21kp0g108q9ygw7lvnz2"
+              }
+            }
+
+## 统计定期捐 [/contact/cf_project/periodic_project/statistics]
+
+### 统计定期捐 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+|  cid  |  &#10007;  |  联系人 id  |
+| wechat_openid | &#10007; | 联系人微信 openid (和 cid 必填一项) |
+
++ Response 200
+
+  + Body
+
+            {
+              "count_join": 2,
+              "count_paid": 3,
+              "sum_paid": 7.10
+            }
+
+## 获取团队捐，我参与和发起的 [/contact/cf_project/user_project/list]
+
+### 获取团队捐 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| cid  |  &#10004;  |  联系人 id  |
+| mine | &#10007; | 传入 1 表示获取我发起的团队捐 |
+| with | &#10007; | `donates`, `project`, `statistics_donate` |
+
++ Response 200
+
+  + Body
+
+            {
+              "project_id": "cawn9v23wqo8z7m0n8w80kl5eg4py1rx",
+              "goal": "2000.00",
+              "title": "交大零八届三班",
+              "comment": "匆匆岁月，我们一起奋斗一起长大。饮水思源、助力母校，让更多的师弟师妹茁长成长。",
+              "update_time": 1442570268,
+              "create_time": 1442570268,
+              "project": {
+                  "id": "cawn9v23wqo8z7m0n8w80kl5eg4py1rx",
+                  "type": "singletime",
+                  "title": "一起捐定额筹款",
+                  "summary": "这里是项目简介",
+                  "desc": "<p style=\"margin-top: 0px; margin-bottom: 10px; color: rgb(34, 34, 34); font-family: 'Helvetica Neue', Arial, 'Microsoft Yahei', arial, sans-serif; font-size: 13px; line-height: 20px; white-space: normal; \">\n    <strong>关于项目</strong>\n</p>\n<p style=\"margin-top: 0px; margin-bottom: 10px; color: rgb(34, 34, 34); font-family: 'Helvetica Neue', Arial, 'Microsoft Yahei', arial, sans-serif; font-size: 13px; line-height: 20px; white-space: normal;\">\n    （简短介绍项目详情，让支持者能够在最短时间内了解你的项目）\n</p>",
+                  "preview_image": "/uploads/cf_default/cf_demo_project_img.jpg",
+                  "sequence": 0,
+                  "status": "published",
+                  "create_time": 1456976008,
+                  "update_time": 1463654233,
+                  "link": "http://cfnew.lingxi.com/p/cawn9v23wqo8z7m0n8w80kl5eg4py1rx"
+              },
+              "donates": [
+                {
+                  "id": "ca94ygk2w7p3n0z5zx93z085m1rxoveq",
+                  "project_id": "ca924lkpryz7m38qd97x09vxe2n15wog",
+                  "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm",
+                  "user_project_id": "ca4k18e2n3gk9rz70lkgdwoymvl45xqp",
+                  "contact_id": "caqox9g48omp21rydmpdvew7n5qkz3lm",
+                  "donate_amount": "20.00",
+                  "flow_number": "",
+                  "status": "paid",
+                  "pay_time": 0,
+                  "donate_cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm",
+                  "comment": "",
+                  "create_time": 1442065196,
+                  "update_time": 1442065196
+                }
+              ]
+            }
+
+## 统计团队捐 [/contact/cf_project/user_project/statistics]
+
+## 统计团队捐 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| cid  |  &#10004;  |  联系人 id  |
+| me | &#10007; | 传入 1 表示获取我参与的团队捐 |
+| mine | &#10007; | 我发起的定期捐 (me, mine 两个参数最少传 1 个) |
+
++ Response 200
+
+  + Body
+
+
+            {
+              "mine": {
+                "count_create_user_project": 8, // 创建的团队捐个数
+                "count_user_paid": 2, // 独立用户参与人数
+                "sum_paid": "33905.74" // 已筹金额
+              },
+              "me": {
+                "count_donate_user_project": 58, // 捐赠的团队捐个数
+                "sum_paid": "128072.35" // 个人参与团队捐捐赠金额
+              }
+            }
+
+## 获取填写的表单列表 [/contact/form/list]
+
+### 获取填写的表单列表 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| cid  |  &#10004;  |  联系人 id  |
+| with | &#10007; | 统计-`statistics_form`, 我的填写-`form_fills` |
+
++ Response 200
+
+  + Body
+
+
+            {
+              "title": "基本的功能完成了0",
+              "summary": "还要再增加一个备注\r\n感谢您在百忙之中抽出时间填写问卷，我们将在答卷中抽取幸运用户送上精美小礼品一份！\r\n备注可以得修改名称备注可以得修改名称！\r\n",
+              "status": "published",
+              "start_time": 0,
+              "end_time": 0,
+              "create_time": 1394364652,
+              "update_time": 1395390441,
+              "sequence": 0,
+              "statistics_form": {
+                  "form_id": "cavlypqrolg7zwk463z0v8xem3295n1x",
+                  "count_fill": 26
+              },
+              "link": "http://f.lingxi360.com/f/?token=KDR0cl4Gz7RyhDOhhkImP_ENi",
+              "form_fills": [
+                  {
+                      "id": "cam7klxnremov5gydo1019z84pwq237o",
+                      "data": {
+                          "name": "郭润苗",
+                          "mobile": "13426422862",
+                          "email": "guorunmiao@qq.com",
+                          "province": "辽宁",
+                          "note": "18d95846d271ab3e8915445951db3918",
+                          "form_token": "abff503089dcb657f76a4aa04a40af33"
+                      },
+                      "create_time": 1395039403
+                  }
+              ]
+            }
+
+## 查找 wechat_openid [/contact/query/wechat_openid]
+
+### 查找 wechat_openid [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| cid  |  &#10004;  |  联系人 id  |
+
++ Response 200
+
+  + Body
+
+
+            {
+              "wechat_openid": "o22Yxtw0NnD69pUhKRKFMhgcU8lY"
+            }
+
+## 查找 wechat_openid [/contact/query/cid]
+
+### 查找 wechat_openid [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| wechat_openid  |  &#10004;  |  微信 openid  |
+
++ Response 200
+
+  + Body
+
+
+            {
+              "cid": "ca2lo512p4q3yewvdkevdzgl8mknx7r9"
+            }
+
+# Data Structures
+
+# Group 活动
+
+## 活动列表 [/event/list]
+
+### 活动列表 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| cid  |  &#10004;  |  联系人 id  |
+| type_id  |  &#10007;  |  活动类型 id  |
+| with | &#10007; | 活动附件-`attachments`, 用户参与活动的信息-`info`(需要传 `cid` 时才生效) |
+| order_by | &#10007; | `id`, `update_time`, `create_time` |
+
++ Response 200
+
+  + Body
+
+
+            {
+              "contact_user": "Rry", // 活动创建人名称
+              "title": "故宫一日游", // 活动名称
+              "type_id": "cam1nrp7vl4kq1396490m2yxoez5wg8w", // 活动分类 id
+              "description": "", // 活动说明
+              "image": "", // 活动图片
+              "event_time": 0, // 管理员自己写的活动开始时间
+              "event_duration": 0, // 活动时长
+              "relate_link": "", // 活动关联链接
+              "create_time": 1465963851,
+              "update_time": 1465963851,
+              "attachments": [
+                  {
+                    "path": "http://file.lxi.me/page/2014/0829/79dd0e0fb11881562fbbdca807980bc213084652.jpg",
+                    "ext": "jpg",
+                    "mimetype": "image/jpeg",
+                    "size": 48728
+                  },
+                  {
+                    "path": "http://file.lxi.me/attachment/2015/0627/a6158a1276dbb246e258ab37ce98f3a6.docx",
+                    "ext": "docx",
+                    "mimetype": "application/octet-stream",
+                    "size": 19645
+                  }
+              },
+              "info": { // 有 cid 同时 with 了 info 才会查询出现
+                "id": "cam1nrp7vl4kq1396490m2yxoez5wg8w",
+                "event_id": "cam1nrp7vl4kq1396490m2yxoez5wg8w", // 活动 id
+                "contact_id": "cam1nrp7vl4kq1396490m2yxoez5wg8w", // 联系人 id
+                "create_time": 1465963850, // 联系人加入活动时间
+                "duration": 8, // 联系人参与时间
+                "score": 2 // 参与这次活动积分
+              }
+            }
+
+## 单个活动信息 [/event/show]
+
+### 单个活动信息 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| id  |  &#10004;  |  活动 id  |
+| with | &#10007; | 活动附件-`attachments` |
+
++ Response 200
+
+  + Body
+
+            {
+              "contact_user": "易昕",
+              "title": "灵犀产品讨论日0",
+              "type_id": "ca17nxo5qvzl9gm10q507w3rp24e8ykw",
+              "description": "下午2:00开始，进行灵犀产品使用讨论。预计到7:00结束。",
+              "image": "",
+              "event_time": 0,
+              "event_duration": 0,
+              "relate_link": "",
+              "create_time": 1370505243,
+              "update_time": 1370505243,
+              "attachments": [
+                  {
+                  "path": "http://file.lxi.me/page/2014/0829/79dd0e0fb11881562fbbdca807980bc213084652.jpg",
+                  "ext": "jpg",
+                  "mimetype": "image/jpeg",
+                  "size": 48728
+                  }
+              ]
+            }
+
+# Data Structures
+
+# Group 捐赠项目
+
+## 捐赠项目列表 [/cf_project/list]
+
+### 捐赠项目列表 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| with  |  &#10007;  |  统计信息-`statistics_donate` 其他信息-`components`  |
+| status | &#10007; | 项目状态 草稿-`draft` 已发布-`published` 已关闭-`closed` |
+| type | &#10007; | 项目类型 单次捐-`singletime` 定期捐-`periodic` |
+| category_id | &#10007; | 分类 id |
+| is_special | &#10007; | 是否置顶 0, 1 |
+| order_by | &#10007; | `sum_paid`, `count_user_paid`, `create_time`, `update_time` |
+
++ Response 200
+
+  + Body
+
+            {
+              "type": "singletime", // 类型 singletime - periodic
+              "cid": "ca17nxo5qvzl9gm10q507w3rp24e8ykw", // 分类 id
+              "title": "撸串众筹", // 标题
+              "summary": "", // 口号
+              "desc": "<p><span style=\"font-family: 微软雅黑, 'Microsoft YaHei'; line-height: 18px;\">testtest</span></p>", // 描述
+              "is_special": false, // 是否置顶
+              "preview_image": "/attachment/2015/0915/4cf0c61a6aa6b26b3e48a17205c44a14.jpg", // 预览图
+              "sequence": 0, // 排序
+              "status": "published", // 状态 published - closed - draft
+              "create_time": 1442032723,
+              "update_time": 1463717527,
+              "sum_paid": "0.00", // 目前捐款
+              "count_user_paid": 0, // 目前捐款人次
+              "components": {
+                "goal": { // 筹款目标
+                  "is_enable": false, // 是否开启
+                  "is_enable_achieved_donate": false, // 是否达到目标
+                  "goal_num": "" // 目标金额
+                },
+                "expire": { // 筹款结束时间
+                  "is_enable": true, // 是否开启
+                  "expire_time": 1355281871 // 时间戳
+                },
+                "success_number_limit": { // 是否限制支持人数上限
+                  "is_enable": false, // 是否开启
+                  "limit_num": "" // 人数
+                }
+              },
+              "statistics_donate": {
+                "sum": "40.00", // 总记算没有成功付款的订单
+                "sum_paid": "0.00", // 成功捐款
+                "count": 2, // 全部订单数量
+                "count_paid": 0, // 付款订单熟练
+                "count_user": 1, // 捐款用户数量，合计没有付款
+                "count_user_paid": 0 // 成功捐款人次
+              }
+              "link": "http://cfnew.lingxi.com/p/cam1nrp7vl4kq1396490m2yxoez5wg8w" // 项目链接
+            }
+
+## 获取单个项目 [/cf_project/show]
+
+### 获取单个项目 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| id  |  &#10004;  |  项目 id  |
+| with | &#10007; | 不需要任何 with, 默认给出信息 |
+
++ Response
+
+```bash
+同列表接口
+```
+
+## 获取项目留言列表 [/cf_project/comment/list]
+
+### 获取项目留言列表 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| pid  |  &#10004;  |  项目 id  |
+| with | &#10007; | 留言用户信息-`user` 回复信息-`replys` 点赞信息-`likes` |
+| status | &#10007; | 留言状态 发布-`published` 草稿-`draft` |
+| order_by | &#10007; | `create_time`, `sequence` |
+
++ Response
+
+  + Body
+
+
+            {
+              "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // 留言用户 id
+              "comment": "999", // 留言内容
+              "sequence": 3, // 排序
+              "status": "published", // 状态
+              "is_anonymous": true, // 是否匿名
+              "create_time": 1465884702,
+              "update_time": 1465884702,
+              "replys": [ // 回复
+                {
+                  "id": "ca4k18e2n3gk9rz76lok6woymvl45xqp",
+                  "cf_user_id": "cawek7zx2eqwovy9027pd483gmnp5rl1",
+                  "comment": "来来来",
+                  "sequence": 0,
+                  "status": "published",
+                  "is_anonymous": false,
+                  "create_time": 1469263656,
+                  "update_time": 1469263656,
+                  "user": {
+                    // 回复用户信息
+                  }
+                }
+              ],
+              "count_like": 1, // 点赞数量
+              "user": {
+                "team_id": "ca4k18e2n3gk9rz76l7dwoymvl45xqpl",
+                "type": "wechat",
+                "openid": "o22Yxt3ey8oNo-0YTDTN3gxYogKQ", // 微信 openid
+                "user_info": {
+                  "openid": "o22Yxt3ey8oNo-0YTDTN3gxYogKQ",
+                  "nickname": "Caspar",
+                  "sex": 1,
+                  "language": "zh_CN",
+                  "city": "朝阳",
+                  "province": "北京",
+                  "country": "中国",
+                  "headimgurl": "http://wx.qlogo.cn/mmopen/A83vHGXtO64oO1O8vicOdicDg3NDBoEWia0qYtM3A3U5B7szj6ucetZ1lZV12uoOb9ZsApgFK5bmfrKupLz0IM5bib6mVTmr8l90/0",
+                  "privilege": []
+                },
+                "mobile": "17710189761",
+                "contact_id": "ca1gk45nrwzxl30vw3po6vp7e8q29omy",
+                "update_time": 1440390574,
+                "create_time": 1438491910
+              },
+              "likes": [
+                {
+                  "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm",
+                  "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2",
+                  "comment_id": "caqox9g48omp21rydm520vew7n5qkz3l",
+                  "update_time": 1468816012,
+                  "create_time": 1468816012
+                }
+              ]
+            }
+
+## 获取单条留言 [/cf_project/comment/show]
+
+### 获取单条留言 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| id  |  &#10004;  |  留言 id  |
+| with | &#10007; | 留言用户信息-`user` 回复信息-`replys` 点赞信息-`likes` |
+
++ Response
+
+```bash
+同列表接口
+```
+
+## 获取项目捐赠列表 [/cf_project/donate/show]
+
+### 获取项目捐赠列表 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| pid  |  &#10004;  |  项目 id  |
+| cid | &#10007; | 联系人 id |
+| status | &#10007; | 支付状态 已支付-`paid` 未支付-`unpaid` |
+| with | &#10007; | 捐赠用户信息-`user` |
+| order_by | &#10007; | donate_amount create_time pay_time |
+
++ Response
+
+  + Body
+
+
+          {
+            "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2", // 项目 id
+            "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // 项目创建人 id
+            "user_project_id": "ca17nxo5qvzl9gm10q507w3rp24e8ykw",
+            "contact_id": "capyw3m54kreo807w8ok692vnxglzq71",
+            "donate_amount": "1000.00", // 捐款额
+            "flow_number": "1006930077201509180918911789", // 支付宝，微信流水号
+            "status": "paid", // 状态
+            "pay_time": 1442571809, // 支付时间
+            "donate_cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // 捐款人 id
+            "comment": "", // 捐款留言
+            "create_time": 1442571788,
+            "update_time": 1442571788,
+            "donate_form_data": {
+              "name": "薛藤",
+              "mobile": "15510579256",
+              "email": "xueteng@justering.com"
+            },
+            "user": { // 用户信息
+                "team_id": "ca4k18e2n3gk9rz76l7dwoymvl45xqpl",
+                "type": "wechat",
+                "openid": "o22Yxt3ey8oNo-0YTDTN3gxYogKQ",
+                "user_info": {
+                  "openid": "o22Yxt3ey8oNo-0YTDTN3gxYogKQ",
+                  "nickname": "Caspar",
+                  "sex": 1,
+                  "language": "zh_CN",
+                  "city": "朝阳",
+                  "province": "北京",
+                  "country": "中国",
+                  "headimgurl": "http://wx.qlogo.cn/mmopen/A83vHGXtO64oO1O8vicOdicDg3NDBoEWia0qYtM3A3U5B7szj6ucetZ1lZV12uoOb9ZsApgFK5bmfrKupLz0IM5bib6mVTmr8l90/0",
+                  "privilege": []
+                },
+                "mobile": "17710189761",
+                "contact_id": "ca1gk45nrwzxl30vw3po6vp7e8q29omy",
+                "update_time": 1440390574,
+                "create_time": 1438491910
+            }
+          }
+
+## 获取项目单条捐款信息 [/cf_project/donate/show]
+
+### 获取项目单条捐款信息 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| id  |  &#10004;  |  捐款 id  |
+| with | &#10007; | 捐赠用户信息-`user` |
+
++ Response
+
+```bash
+同列表
+```
+
+## 获取项目进度列表 [/cf_project/progress/list]
+
+### 获取项目进度列表 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| pid  |  &#10004;  |  项目 id  |
+| with | &#10007; | `project` |
+
++ Response
+
+  + Body
+
+
+            {
+              "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2",
+              "title": "Nam magni voluptatibus aut aut quas molestiae et.",
+              "desc": "Laudantium sunt sint ut eaque autem. Architecto aut est aperiam. Accusamus iusto molestiae voluptate eos soluta et dicta eum. Eum et est est blanditiis deserunt sed aspernatur. Facilis magni ut occaecati vero.",
+              "image": [
+                  {
+                      "path": "http:\\/\\/file.lxi.me\\/uploadify\\/20160503\\/57281c13efc20.jpg"
+                  }
+              ],
+              "progress_time": "2016-08-30 18:23:59",
+              "create_time": 1472552639,
+              "update_time": 1472552639,
+              "project": {...}
+            }
+
+### 获取项目分类 [/cf_project/category/list]
+
+### 获取项目分类 [GET]
+
++ Response
+
+  + Body
+
+
+            [
+              {
+                "type": "category",
+                "id": "ca924lkpryz7m38q09x09vxe2n15wog4",
+                "attributes": {
+                  "name": "学院发展基金筹款项目",
+                  "create_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
+                  "update_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
+                  "create_time": 1464624000,
+                  "update_time": 1464624000
+                }
+              },
+              {
+                "type": "category",
+                "id": "ca43en47pzywmr8g01z61vkxlq2o953p",
+                "attributes": {
+                "name": "学校发展基金筹款项目",
+                  "create_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
+                  "update_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
+                  "create_time": 1462896000,
+                  "update_time": 1463500800
+                }
+              },
+              {
+                "type": "category",
+                "id": "capxpyw3m54kreo8075692vnxglzq71z",
+                "attributes": {
+                  "name": "十二项线上筹款项目",
+                  "create_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
+                  "update_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
+                  "create_time": 1463500800,
+                  "update_time": 1463500800
+                }
+              }
+            ]
+
+# Data Structures
+
+# Group 表单
+
+## 获取表单列表 [/form/list]
+
+## 获取表单列表 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| category_id  |  &#10007;  |  分类 id  |
+| status | &#10007;  | 草稿-`draft` 发布-`published` |
+| order_by  |  &#10007;  |  `id` `create_time` `update_time`  |
+
++ Response
+
+  + Body
+            {
+            "type": "form",
+            "id": "ca9r4x83g5ep9wn6rn7g0mlo1qyzv27k",
+            "attributes": {
+              "title": "扫我啊", // 标题
+              "summary": "<p><img src=\"http://file.lxi.me/uploadify/20160616/57624f695c980.png-scale560\" title=\"QQ截图20160501121853.png\" // 具体描述 alt=\"QQ截图20160501121853.png\"/>+</p><p>+face++</p>",
+              "status": "published", // 状态
+              "start_time": 1468239349, // 开始报名时间
+              "end_time": 1468239349, // 结束报名时间
+              "create_time": 1468239349, // 项目创建时间
+              "update_time": 1468464835, // 更新时间
+              "sequence": 0, // 排序
+              "link": "http://f.lingxi360.com/?token=cNMnkTwiFTamcTwnN" // 链接
+              }
+            }
+
+## 获取单个表单 [/form/show]
+
+## 获取单个表单 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| id  |  &#10004;  |  表单 id  |
+
++ Response
+
+```bash
+同表单列表
+```
+
+# Data Structures
+
+# Group 筹款支付表单
+
+目前灵析筹款表单主要分为 `单次捐`，`组队捐` 和 `定期捐` ，各个类型的表单的项目连接的格式如下：
+
+### 单次捐
+
+* 单次捐筹款
+
+```bash
+单次捐筹款的链接格式为： http://cf.lingxi360.com/p/+项目信息哈希
+
+示例：http://cf.lingxi360.com/p/LXEmxB3LG8R0
+```
+
+### 组队捐
+
+* 组队捐创建团队
+
+```bash
+组队捐创建团队的链接格式为： http://cf.lingxi360.com/p/+项目信息哈希+/up/create
+
+示例： http://cf.lingxi360.com/p/caxpyw3m54kreo8677qg692vnxglzq71/up/create
+```
+
+* 组队捐筹款
+
+```bash
+组队捐筹款页面的链接格式为： http://cf.lingxi360.com/up/+团队信息哈希（注意和单次捐的区别：中间是 up）
+
+示例：http://cf.lingxi360.com/up/caxpyw3m54kreo8677qg692vnxglzq71
+```
+
+### 定期捐
+
+* 定期捐筹款
+
+```bash
+定期捐捐赠页面链接格式为： http://cf.lingxi360.com/periodic/+项目信息哈希
+
+示例：http://cf.lingxi360.com/periodic/LXEmxB3LG8R0
+```
+
+:::warning
+以上项目连接均为展示格式之用，链接所对应项目未必都真实存在
+:::
+
+### 获取表单字段 name 值
+
+在浏览器中通过 `开发者工具（推荐）` 或者 `查看源代码` 的方式找到需要操作的表单字段的对应 `name` 值。`name` 值将用来和表单的相关操作通信。
+注意：通过查看源码可以发现部分表单的的 `name` 值为 `form_data[*]`，这时的话只需要取 `[]` 中的部分作为传递的 `name` 即可。
+
+### 特殊字段的处理
+
+在获取 `name` 值得时候，有几个字段的 `name`值比较特殊，现在下表说明，调用过程中一定要注意这个部分。
+
+|  序号  |	字段页面描述	|  字段 name  |  说明  |
+| --- | --- | --- |--- |
+|  1  |  捐款金额  |  donate_amount  | 捐款金额在不同的页面都有出现，这个字段主要用来设置捐款的金额，因为在页面中比较难发现，特在此指出  |
+|  2  |  筹款目标  |  goal  | 筹款目标出现在团队捐团队创建页面，为避免与捐款金额混淆，特在此指出  |
+|  3  |  捐赠项目  |  donate_project  | 捐赠项目在页面中有父项目和子项目之分，但是在设置的时候只需设置一个参数 `donate_project` 即可，此字段的值为一个 `int` 类型的 `id` ，此  `id` 可以在灵析后台项目管理页面的第一页找到 |
+|  4 |  发票地址字段  |  invoice_address  | 在查看发票部分的源码时，会发现 `发票地址` 有上下两个 `name` 值，在对发票地址进行操作的时候，无需管页面中的两个 `nama` 值，只需设置 `name=invoice_address`  即可|
+
+### [操作] 自动弹出捐赠窗口
+
+此接口能控制在筹款项目页面打开时是否自动弹出捐赠项目的支付弹窗。
+
+```
+示例：http://cf.lingxi360.com/p/LXEmxB3LG8R0?_setting_form_popup=1
+```
+
+```bash
+_setting_form_popup: int (默认 0)
+
+设置为1将在页面打开时自动弹出捐赠表单，目前仅支持移动端的单次捐捐款页面，组队捐捐款页面和定期捐捐款页面
+```
+
+### [操作] 设置默认值
+
+可以通过在url参数中设置表单项目的默认值。
+
+```
+示例：http://cf.lingxi360.com/p/LXEmxB3LG8R0?_default_title=今天天气很好
+```
+
+使用方式的在链接后面传递参数 default_* ，*可以是页面表单中存在的任意 name 值。
+
+```bash
+_default_name:	string
+
+_default_*，* 代表页面中存在字段的 name 值
+```
+
+### [操作] 属性只读
+
+可以通过在 `url `参数中设置表单字段是否只读。
+
+```
+//此时表单中的 title 字段会被设置为不可修改的状态
+示例：http://cf.lingxi360.com/p/LXEmxB3LG8R0?_unchangeable_title=1
+```
+
+使用方式的在链接后面传递参数 `_unchangeable_*` ，`*`可以是页面表单中存在的任意 `name` 值。
+
+```
+string: _unchangeable_name=默认 0 #_unchangeable_*，* 代表页面中存在字段的 name 值
+```
+
+:::note
+以上几个操作可以同时进行，操作是只需将多个参数使用 `&` 连接起来即可。为保证结果的正确性和 `API` 能被正确执行，在参数传递的时候记得对 `中文` 和 `特殊符号` 进行转义。
+
+```
+//多个参数同时使用示例
+http://cf.lingxi360.com/p/LXE8G6B_tyG=GOAF?_default_donate_project=50585&_setting_form_popup=1
+```
+:::
