@@ -236,3 +236,32 @@ nav ul a {
   margin-top: 30px;
   margin-bottom: 30px;
 }
+
+nav ul>li:last-child {
+  margin-bottom: 0;
+}
+
+.action h4.action-heading .method.get {
+  color: white;
+}
+
+// rewrite scrollbar
+nav,
+pre {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: @greyLighter;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid @greyLighter;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: @greyLighter;
+  }
+}
