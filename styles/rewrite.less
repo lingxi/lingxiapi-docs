@@ -213,6 +213,10 @@ nav .resource-group .collapse-content {
   // padding-left: 10px;
 }
 
+nav>div>div>ul>li:first-child>a {
+  border-top: 1px solid transparent;
+}
+
 nav .resource-group .heading a {
   padding-left: 0;
 }
@@ -230,6 +234,12 @@ nav ul a {
     background: @primary !important;
     border-left-width: 0 !important;
   }
+}
+
+nav ul>li.active a {
+  color: white !important;
+  background: @primary !important;
+  border-left-width: 0 !important;
 }
 
 .action {

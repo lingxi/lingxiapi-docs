@@ -214,6 +214,21 @@ function init() {
           toggleCollapseNav({target: navItems[0].children[0]});
         }
     }
+
+    // Make nav li item add active class when clicked.
+    var navLiItems = document.querySelectorAll('nav ul li');
+    for (i = 0; i < navLiItems.length; i ++) {
+      navLiItems[i].onclick = function (e) {
+        var target = e.currentTarget;
+        if (! target.classList.contains('active')) {
+          for (j = 0; j < navLiItems.length; j ++) {
+            navLiItems[j].classList.remove('active');
+          }
+
+          target.classList.add('active');
+        }
+      };
+    }
 }
 
 // Initial call to set up buttons
