@@ -62,11 +62,15 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 | 字段名称 | 类型 | 说明 | 默认 |
 | :-- | -- |:-- | :-- |
 | min_time   |  int  |  资源的最小创建时间，UNIX时间戳  | 默认不参与分页限制 |
-|  min_time  |  int  |  资源的最大创建时间，UNIX时间戳  | 默认不参与分页限制 |
+|  max_time  |  int  |  资源的最大创建时间，UNIX时间戳  | 默认不参与分页限制 |
 |  page  |  int  |  分页页面  | 1 |
-|  per_page  |  int  |  分页每页记录条数 | **参考具体 api** |
+|  per_page  |  int  |  分页每页记录条数 | **默认为10, 最大不超过500, 具体参考具体 api** |
 | order_by | string | 排序方式 | **参考具体 api** |
 | order_sequence | string | 排序方式 | asc, desc 默认为 desc |
+
+:::note
+建议手动传入 per_page 来获取分页数据
+:::
 
 **with 参数**
 
@@ -99,7 +103,7 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 ```json
 {
   "data": {
-
+    "total": 1000
   }
 }
 ```
@@ -132,11 +136,13 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 
 <br/>
 
-## SDK 下载
+## SDK 地址
 
-- php [:link:](https://github.com/LingxiTeam/signature-authenticator)
+_如何下载安装，具体参考链接文档_
 
-- node [:link:](https://github.com/RryLee/node-signature-authenticator)
+- php [链接](https://github.com/LingxiTeam/api-authentication)
+
+- node [链接](https://github.com/RryLee/node-signature-authenticator)
 
 # Data Structures
 
@@ -175,87 +181,6 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 
 # Data Structures
 
-# Group 微信授权
-
-## 获取微信授权链接 [/wechat/authorization]
-
-:::note
-### 流程
-- 请求灵析接口 /wechat/authorization
-	- 基本授权（scope=base）：不需要用户确认，只能拿到 openid
-    - 完整用户信息授权（scope=user_info）：需要用户确认授权，能拿到完整用户信息
-- 接口返回授权链接
-- 跳转到授权链接
-- 授权完成，跳转回 callback_url，带有 token、data 两个参数
-	- 首先验证 token，避免中间人攻击或伪造数据
-    - 将 data 做 base64_decode 再做 json_decode，就是授权结果的 json 数组
-    - 验证 status 为 1
-
-### 授权结果解析代码示例
-
-```php
-$token = session('wechat_oauth_token'); // 预先放在 session 里的 token
-if (!$token || $token != $_GET['token']) {
-    die('微信授权失败，请退出后重新尝试。'); // token 错误
-}
-
-$oauthData = json_decode(base64_decode($_GET['data']), true);
-if (!$oauthData || !$oauthData['status']) {
-      die('微信授权失败，请退出后重新尝试。'); // 用户可能拒绝了授权
-}
-```
-
-### 注意事项：
-
-- 调用本接口需要传递一个随机字符串（token），授权完成后会原样返回，通过对比 token，避免中间人攻击
-:::
-
-### 获取微信授权链接 [GET]
-
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-|  callback_url  |  &#10004;  |  回调地址  |
-| token   |  &#10004;  |  随机字符串  |
-|  scope  |  &#10004;  |   base, user_info 两种类型  |
-
-+ Response 200
-
-  + Body
-
-            http://wxauth.lingxi360.com/index/openid?type=cf&appid=wxd67dc18adf910e3a&redirect_url=http%3A%2F%2Fapix.lingxi360.com%2Fv1%2Fwechat%2Fauthorization%3Fapi_key%3DZq4nS0fJF%26callback_url%3Dexample.com%26noncestr%3DK6lWrP1IqFyHR1oV%26signature%3Df2a16dee417d65a6791089079cfcba87a57bc1812f0bfe1d2e395f50871115f7%26stamp%3D1472111123%26token%3Dadasgdfgdghfghhjkk%26wechat_oauth_scope%3Dsnsapi_base%26token%3Dadasgdfgdghfghhjkk
-
-## 获取 jsticket [/wechat/jsticket]
-
-### 获取 jsticket [GET]
-
-+ Response 200
-
-  + Body
-
-            ticket
-
-### 获取 Js SignaturePackage [/wechat/signature_package]
-
-### 获取 Js SignaturePackage [GET]
-
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-|  url  |  &#10004;  |  当前页面 url  |
-
-+ Response 200
-
-  + Body
-
-            {
-              "appId": your_app_id,
-              "nonceStr": "rand_57f8b8c......",
-              "timestamp": 1475918016,
-              "url": "http://www.baidu.com",
-              "signature": "74fd54eb1550cb3cf7cc63a9dc9f66c09a80993c"
-            }
-
-# Data Structures
-
 # Group 联系人
 
 ## 获取单个联系人 [/contact/show]
@@ -273,70 +198,71 @@ if (!$oauthData || !$oauthData['status']) {
   + Body
 
             {
-              "name": "京城五",
-              "nickname": "",
-              "member": "",
-              "gender": "",
-              "country": "",
-              "address": "三元桥",
-              "province": "",
-              "zip_code": "",
-              "avatar": "http://wx.qlogo.cn/mmopen/ajNVdqHZLLADwPUGnaAmvzHu3R4sK33OUJnLdqd97GHn2fgjiaiaKvrXs78oYUuFziahlOSCygj1z696I4ian9CACQ/0",
-              "email": "guorunmiao@qq.com",
-              "email2": "",
-              "mobile": "12323234545",
-              "mobile2": "",
-              "birthday": "0000-00-00",
-              "qq": "28223123",
-              "weibo_name": "",
-              "weibo_link": "",
-              "wx_username": "",
-              "org_department": "",
-              "org_position": "",
-              "org_phone": "",
-              "description": "",
-              "create_time": 1403447755,
-              "update_time": 1427448819,
-              "member_donate_count": 0,
-              "member_donate_sum": 0,
-              "member_donate_first_date": 0,
-              "member_credit_score": 0,
-              "org": {
-                "id": "cavl1l5m4zq97xwn0wz023ye8pvrkogz",
-                "name": "灵析",
-                "website": "http://www.lingxi360.com/index.php",
-                "logo": "",
-                "phone": "010-4683670",
-                "fax": "010-64683671",
-                "address": "远洋新干线A座1109",
-                "zipcode": "10027",
-                "email": "hi@lingxi.com",
-                "description": "欢迎大家拍砖、献花和我们约聊······这里是十分热情的灵析团队！",
-                "contact_user": "易昕",
-                "create_user_id": 2,
-                "create_time": 1460638709
+              "name": "京城五", // (string) 姓名
+              "nickname": "", // (string) 名称
+              "email": "guorunmiao@qq.com", // (string) 邮箱
+              "email2": "", // (string) 备用邮箱
+              "mobile": "12323234545", // (string) 手机号
+              "mobile2": "", // (string) 备用手机号
+              "birthday": "0000-00-00", // (string) 生日
+              "gender": "", // (string) 性别
+              "avatar": "http://wx.qlogo.cn/mmopen/ajNVdqHZLLADwPUGnaAmvzHu3R4sK33OUJnLdqd97GHn2fgjiaiaKvrXs78oYUuFziahlOSCygj1z696I4ian9CACQ/0", // (string) 图像
+              "address": "三元桥", // (string) 地址
+              "zip_code": "", // (string) 邮编
+              "description": "", // (string)
+              "org_id": 102666,
+              "org_department": "", // (string) 工作单位部门
+              "org_position": "", // (string) 单位地址
+              "org_phone": "", // (string) 单位电话
+              "country": "", // (string) 国家
+              "province": "", // (string) 省份
+              "qq": "28223123", // (string) qq
+              "wx_username": "", // (string) 微信用户名
+              "weibo_name": "", // (string) 微博名称
+              "weibo_link": "", // (string) 微博链接
+              "create_time": 1403447755, // (int) 创建时间
+              "update_time": 1427448819, // (int) 更新时间
+              "constellation": 0, // (int) 星座
+              "member": "", // (string)
+              "member_donate_count": 0, // (int)
+              "member_donate_sum": 0, // (int)
+              "member_donate_first_date": 0, // (int)
+              "member_credit_score": 0, // (int)
+              "org": { // 单位详细信息
+                "id": "cavl1l5m4zq97xwn0wz023ye8pvrkogz", // (string)
+                "name": "灵析", // (string)
+                "website": "http://www.lingxi360.com/index.php", // (string) 网站
+                "logo": "", // (string)
+                "phone": "010-4683670", // (string)
+                "fax": "010-64683671", // (string)
+                "address": "远洋新干线A座1109", // (string)
+                "zipcode": "10027", // (string)
+                "email": "hi@lingxi.com", // (string)
+                "description": "欢迎大家拍砖、献花和我们约聊······这里是十分热情的灵析团队！", // (string)
+                "contact_user": "易昕", // (string) 单位联系人
+                "create_time": 1460638709 // (int) 创建时间
               },
-              "statistics_event": {
-                "count_event": 7,
-                "duration": 16
+              "statistics_event": { // 活动统计
+                "count_event": 7, // (int) 活动次数
+                "duration": 16 // (int) 活动时间
               },
-              "statistics_donate": {
-                "count_paid": 1,
-                "sum_paid": "25.00"
+              "statistics_donate": { // 捐款统计
+                "count_paid": 1, // (int) 支付次数
+                "sum_paid": "25.00" // (float) 联系人捐款总数
               }
             }
 
 ## 获取联系人参与全部项目 [/contact/cf_project/list]
 
-### 参与项目 [GET]
+### 参与全部项目 [GET]
 
 | 名称   |  必填  |  说明  |
 | :-- | :--: | :-- |
 |  cid  |  &#10004;  |  联系人 id  |
-|  with  |  &#10007;  |  我的捐赠-`donates` 统计信息-`statistics_donate` 其他信息-`components` |
 |  type | &#10007; | 项目类型 单次捐-`singletime` 定期捐-`periodic` |
 |  category_id | &#10007; | 分类 id |
 |  order_by | &#10007; | 我的捐赠-`sum_paid` `create_time` `update_time` |
+|  with  |  &#10007;  |  我的捐赠-`donates` 统计信息-`statistics_donate` 其他信息-`components` |
 
 + Response 200
 
@@ -344,30 +270,30 @@ if (!$oauthData || !$oauthData['status']) {
 
 
             {
-              "type": "singletime",
-              "team_id": "ca7nxo5qvzl9gm10q2vk07w3rp24e8yk",
-              "cid": "ca17nxo5qvzl9gm10q507w3rp24e8ykw",
-              "title": "七夕，给你一个爱的约会",
-              "summary": "",
-              "desc": "<p><span style=\"font-family: 微软雅黑, 'Microsoft YaHei'; line-height: 1.5em;\">嗨，[#姓名#]<br></span></p>",
-              "sequence": "0",
-              "preview_image": "http://file.lxi.me//attachment/2015/0915/4cf0c61a6aa6b26b3e48a17205c44a14.jpg",
-              "is_special": true,
-              "status": "published",
-              "goal": false,
-              "is_donatable": true,
-              "is_together_donatable": false,
-              "create_time": 1442032723,
-              "update_time": 1444878789,
-              "sum_paid": 8.74,
-              "count_user_paid": "10",
+              "type": "singletime", // (string) singletime(单次捐), periodic(定期捐)
+              "team_id": "ca7nxo5qvzl9gm10q2vk07w3rp24e8yk", // (string)
+              "cid": "ca17nxo5qvzl9gm10q507w3rp24e8ykw", // (string) 项目分类 id
+              "title": "七夕，给你一个爱的约会", // (string) 标题
+              "summary": "", // (string) 简介
+              "desc": "<p><span style=\"font-family: 微软雅黑, 'Microsoft YaHei'; line-height: 1.5em;\">嗨，[#姓名#]<br></span></p>", // (string) 详细
+              "sequence": "0", // (string) 权重
+              "preview_image": "http://file.lxi.me//attachment/2015/0915/4cf0c61a6aa6b26b3e48a17205c44a14.jpg", // (string) 预览图片
+              "is_special": true, // (bool) 是否顶置
+              "status": "published", (string) published(发布),  closed(关闭), draft(草稿)
+              "goal": false, // (bool) 是否有目标
+              "is_donatable": true, // (bool) 是否可以捐赠
+              "is_together_donatable": false, // (bool) 是否开启团队捐
+              "create_time": 1442032723, // (string) 创建时间
+              "update_time": 1444878789, // (string) 更新时间
+              "sum_paid": 8.74, // (float) 项目总筹款款
+              "count_user_paid": "10", // (float) 捐款人数
               "components": {
-                "periodic": {
+                "periodic": { // 定期捐信息
                   "information": {
-                    "is_enabled": "1",
+                    "is_enabled": "1", // (string) 是否开启分档筹款
                     "options": [
                       {
-                        "money": "6",
+                        "money": "6", // (string) 额度
                         "desc": "一个羊肉串",
                         "limit_num": "100"
                       },
@@ -382,70 +308,92 @@ if (!$oauthData || !$oauthData['status']) {
                         "limit_num": "100"
                       }
                     ],
-                    "is_input_allowed": "false"
+                    "is_input_allowed": "false" // 是否允许用户自己输入额度
                   }
                 },
-                "donate_certificate": {
+                "donate_certificate": { // 项目每次捐赠证书配置
                   "config": {
                     "is_enable": "0",
                     "cert_template_id": "0"
                   }
                 },
-                "goal": {
-                  "is_enable": false,
-                  "is_enable_achieved_donate": false,
-                  "goal_num": 0
+                "project_donate_certificate": { // 项目级别证书
+                  "config": {
+                    "is_enable": "0",
+                    "cert_template_id": "0"
+                  }
                 },
-                "expire": {
-                  "is_enable": false,
-                  "expire_time": 0
+                "goal": { // 项目目标
+                  "is_enable": false, // (bool) 是否开启
+                  "is_enable_achieved_donate": false, // (bool) 达到目标是否可以继续捐赠
+                  "goal_num": 0 // 目标金额
                 },
-                "success_number_limit": {
-                  "is_enable": false,
-                  "limit_num": 0
+                "expire": { // 项目到期时间
+                  "is_enable": false, // (bool) 是否开启
+                  "expire_time": 0 // (int) 过期时间
+                },
+                "success_number_limit": { // 捐赠次数上限
+                  "is_enable": false, // (bool) 是否开启
+                  "limit_num": 0 // (int) 次数限制
                 }
               }，
-              "link": "http://cf.lingxi360.com/p/ca512p4q3yewvdk5y3qgodzgl8mknx7r",
-              "donates": [
+              "link": "http://cf.lingxi360.com/p/ca512p4q3yewvdk5y3qgodzgl8mknx7r", // 项目链接
+              "donates": [ // 和捐赠信息一致
                 {
-                "id": "carp7vl4kq13904we81ez6m2yxoez5wg",
-                "user_project_id": "caox9g48omp21rydmrwn6vew7n5qkz3l",
-                "project_id": "ca512p4q3yewvdk5y3qgodzgl8mknx7r",
-                "cf_user_id": "canxo5qvzl9gm10qp9lkld7w3rp24e8y",
-                "donate_cf_user_id": "canxo5qvzl9gm10qp9lkld7w3rp24e8y",
-                "contact_id": "capx8v2gr3ymw40557mp309qo571ezkl",
-                "donate_amount": "75.00",
-                "flow_number": "4008632001201608090925588822",
-                "status": "paid",
-                "pay_time": 1470714270,
-                "comment": "",
-                "donate_form_data": {
-                "name": "西桐",
-                "email": "joy_song@126.com",
-                "new_item_1": "",
-                "ip": "10.158.26.1",
-                "browser_user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_3 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13G34 MicroMessenger/6.3.23 NetType/4G Language/zh_CN",
-                "browser_referer": "http://cf.lingxi360.com/up/caox9g48omp21rydmrwn6vew7n5qkz3l?ouid=canxo5qvzl9gm10qp9lkld7w3rp24e8y&from=groupmessage&isappinstalled=0"
-                },
-                "create_time": 1470714252,
-                "update_time": 1470714270
+                  "id": "carp7vl4kq13904we81ez6m2yxoez5wg",
+                  "user_project_id": "caox9g48omp21rydmrwn6vew7n5qkz3l",
+                  "project_id": "ca512p4q3yewvdk5y3qgodzgl8mknx7r",
+                  "cf_user_id": "canxo5qvzl9gm10qp9lkld7w3rp24e8y",
+                  "donate_cf_user_id": "canxo5qvzl9gm10qp9lkld7w3rp24e8y",
+                  "contact_id": "capx8v2gr3ymw40557mp309qo571ezkl",
+                  "donate_amount": "75.00",
+                  "flow_number": "4008632001201608090925588822",
+                  "status": "paid",
+                  "pay_time": 1470714270,
+                  "comment": "",
+                  "donate_form_data": {
+                    "name": "西桐",
+                    "email": "joy_song@126.com",
+                    "new_item_1": "",
+                    "ip": "10.158.26.1",
+                    "browser_user_agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 9_3_3 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Mobile/13G34 MicroMessenger/6.3.23 NetType/4G Language/zh_CN",
+                    "browser_referer": "http://cf.lingxi360.com/up/caox9g48omp21rydmrwn6vew7n5qkz3l?ouid=canxo5qvzl9gm10qp9lkld7w3rp24e8y&from=groupmessage&isappinstalled=0"
+                  },
+                  "create_time": 1470714252,
+                  "update_time": 1470714270
                 }
               ],
-              "statistics_donate": {
-                "sum": 600,
-                "sum_paid": 600,
-                "count": 8,
-                "count_paid": 8,
-                "count_user": 1,
-                "count_user_paid": 1,
-                "percent": 0,
-                "percent_round": 0,
-                "is_achieved": false,
-                "is_expired": true,
-                "is_over_limit": false,
-                "is_donatable": false
+              "statistics_donate": { // 捐赠统计
+                "sum": 602.6, // (float) 总筹款额(包括额外捐赠)
+                "sum_paid": 600, // (float) 总筹款额(不包括额外捐赠)
+                "count": 8, // (int) 总捐款次数(包括额外次数)
+                "count_paid": 8, // (int) 总付款次数
+                "count_user": 1, // (int) 总捐款人数
+                "count_user_paid": 1, // (int) 总捐款人数(包括额外次数)
+                "percent": 0, // (int) 项目进度(不超过100)
+                "percent_round": 0, // (int) 项目绝对进度(可以超过 100)
+                "is_achieved": false, // (bool) 是否达到目标
+                "is_expired": true, // (bool) 是否到期
+                "is_over_limit": false, // (bool) 是否超出目标
+                "is_donatable": false // (bool) 是否可以继续捐赠
               }
             }
+
+## 获取联系人参加的单个项目 [/contact/cf_project/show]
+
+### 参与单个项目信息 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+|  id  |  &#10007;  |  项目 id  |
+| cid  | &#10007; | 联系人 id |
+|  with  |  &#10007;  |  项目捐赠统计-`statistics_donate` 项目额外信息-`components` 我的捐赠-`donates` |
+
++ Response 200
+
+```bash
+信息同上
+```
 
 ## 获取联系人参加的全部定期捐 [/contact/cf_project/periodic_project/list]
 
@@ -455,8 +403,8 @@ if (!$oauthData || !$oauthData['status']) {
 | :-- | :--: | :-- |
 |  cid  |  &#10007;  |  联系人 id  |
 | wechat_openid | &#10007; | 联系人微信 openid (和 cid 必填一项) |
-|  with  |  &#10007;  |  我的捐赠-`donates` 绑定项目-`project` |
 |  status | &#10007; | 状态 初始化-`inti` 绑定-`binded` 未绑定-`unbind` |
+|  with  |  &#10007;  |  我的捐赠-`donates` 绑定项目-`project` |
 
 + Response 200
 
@@ -667,9 +615,9 @@ if (!$oauthData || !$oauthData['status']) {
               "wechat_openid": "o22Yxtw0NnD69pUhKRKFMhgcU8lY"
             }
 
-## 查找 wechat_openid [/contact/query/cid]
+## 查找 cid [/contact/query/cid]
 
-### 查找 wechat_openid [GET]
+### 查找 cid [GET]
 
 | 名称   |  必填  |  说明  |
 | :-- | :--: | :-- |
@@ -696,8 +644,8 @@ if (!$oauthData || !$oauthData['status']) {
 | :-- | :--: | :-- |
 | cid  |  &#10004;  |  联系人 id  |
 | type_id  |  &#10007;  |  活动类型 id  |
-| with | &#10007; | 活动附件-`attachments`, 用户参与活动的信息-`info`(需要传 `cid` 时才生效) |
 | order_by | &#10007; | `id`, `update_time`, `create_time` |
+| with | &#10007; | 活动附件-`attachments`, 用户参与活动的信息-`info`(需要传 `cid` 时才生效) |
 
 + Response 200
 
@@ -783,12 +731,12 @@ if (!$oauthData || !$oauthData['status']) {
 
 | 名称   |  必填  |  说明  |
 | :-- | :--: | :-- |
-| with  |  &#10007;  |  统计信息-`statistics_donate` 其他信息-`components`  |
+| category_id | &#10007; | 分类 id |
 | status | &#10007; | 项目状态 草稿-`draft` 已发布-`published` 已关闭-`closed` |
 | type | &#10007; | 项目类型 单次捐-`singletime` 定期捐-`periodic` |
-| category_id | &#10007; | 分类 id |
 | is_special | &#10007; | 是否置顶 0, 1 |
 | order_by | &#10007; | `sum_paid`, `count_user_paid`, `create_time`, `update_time` |
+| with  |  &#10007;  |  统计信息-`statistics_donate` 其他信息-`components`  |
 
 + Response 200
 
@@ -856,9 +804,9 @@ if (!$oauthData || !$oauthData['status']) {
 | 名称   |  必填  |  说明  |
 | :-- | :--: | :-- |
 | pid  |  &#10004;  |  项目 id  |
-| with | &#10007; | 留言用户信息-`user` 回复信息-`replys` 点赞信息-`likes` |
 | status | &#10007; | 留言状态 发布-`published` 草稿-`draft` |
 | order_by | &#10007; | `create_time`, `sequence` |
+| with | &#10007; | 留言用户信息-`user` 回复信息-`replys` 点赞信息-`likes` |
 
 + Response
 
@@ -944,8 +892,8 @@ if (!$oauthData || !$oauthData['status']) {
 | pid  |  &#10004;  |  项目 id  |
 | cid | &#10007; | 联系人 id |
 | status | &#10007; | 支付状态 已支付-`paid` 未支付-`unpaid` |
-| with | &#10007; | 捐赠用户信息-`user` |
 | order_by | &#10007; | donate_amount create_time pay_time |
+| with | &#10007; | 捐赠用户信息-`user` |
 
 + Response
 
