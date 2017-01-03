@@ -96,6 +96,7 @@ function toggleCollapseNav(event, force) {
     var heading = event.target.parentNode;
     var content = heading.nextSibling;
     var inner = content.children[0];
+    var contents = document.querySelectorAll('nav .resource-group .collapse-content');
 
     if (heading.className.indexOf('heading') === -1) {
       // Clicked without hitting the right element?
@@ -110,6 +111,9 @@ function toggleCollapseNav(event, force) {
         content.style.maxHeight = '0px';
       }
     } else {
+      for (var i = 0; i < contents.length; i ++) {
+        contents[i].style.maxHeight = '0px';
+      }
       // Currently hidden, so let's show it
       content.style.maxHeight = inner.offsetHeight + 12 + 'px';
     }
