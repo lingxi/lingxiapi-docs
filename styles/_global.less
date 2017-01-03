@@ -1,0 +1,97 @@
+.container {
+  width: 1000px;
+}
+
+.container .row .content {
+  padding-left: 40px;
+  border-left: 1px solid @greyLighter;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+// 去掉 pre 边框
+pre {
+  border: none !important;
+}
+
+code {
+    color: #e96900;
+    padding: 3px 5px;
+    margin: 0 2px;
+    border-radius: 2px;
+    white-space: wrap;
+    border: none !important;
+}
+
+// nav
+nav .resource-group {
+  margin-bottom: 0;
+  border-bottom: 1px solid @greyLighter;
+}
+
+nav .resource-group .collapse-content {
+  // padding-left: 10px;
+}
+
+nav>div>div>ul>li:first-child>a {
+  border-top: 1px solid transparent;
+}
+
+nav .resource-group .heading a {
+  padding-left: 0;
+}
+
+nav .resource-group .heading a:hover,
+nav ul a:hover {
+  text-decoration: none !important;
+}
+
+nav ul a {
+  padding: 5px 12px;
+  border-left-width: 0;
+  &:hover {
+    color: white !important;
+    background: @primary !important;
+    border-left-width: 0 !important;
+  }
+}
+
+nav ul>li.active a {
+  color: white !important;
+  background: @primary !important;
+  border-left-width: 0 !important;
+}
+
+.action {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+nav ul>li:last-child {
+  margin-bottom: 0;
+}
+
+.action h4.action-heading .method.get {
+  color: white;
+}
+
+// rewrite scrollbar
+nav,
+pre {
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: @greyLighter;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background-color: white;
+    border: 1px solid @greyLighter;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: @greyLighter;
+  }
+}

@@ -190,11 +190,11 @@ _如何下载安装，具体参考链接文档_
 
 ### 单个联系人 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-|  cid  |  &#10007;  |  联系人 id  |
-|  wechat_openid  |  &#10007;  |  联系人微信 openid，和 cid 两者必传一个  |
-|  with  |  &#10007;  |  企业-`org`, 附件-`attachments`, 活动统计-`statistics_event`, 捐款统计-`statistics_donate` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+|  cid  | string |  &#10007;  |  联系人 id  |
+|  wechat_openid | string  |  &#10007;  |  联系人微信 openid，和 cid 两者必传一个  |
+|  with  | string |  &#10007;  |  企业-`org`, 附件-`attachments`, 活动统计-`statistics_event`, 捐款统计-`statistics_donate` |
 
 + Response 200
 
@@ -259,13 +259,13 @@ _如何下载安装，具体参考链接文档_
 
 ### 参与全部项目 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-|  cid  |  &#10004;  |  联系人 id  |
-|  type | &#10007; | 项目类型 单次捐-`singletime` 定期捐-`periodic` |
-|  category_id | &#10007; | 分类 id |
-|  order_by | &#10007; | 我的捐赠-`sum_paid` `create_time` `update_time` |
-|  with  |  &#10007;  |  我的捐赠-`donates` 统计信息-`statistics_donate` 其他信息-`components` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+|  cid  | string | &#10004;  |  联系人 id  |
+|  type | string | &#10007; | 项目类型 单次捐-`singletime` 定期捐-`periodic` |
+|  category_id | string | &#10007; | 分类 id |
+|  order_by | string | &#10007; | 我的捐赠-`sum_paid` `create_time` `update_time` |
+|  with  | string |  &#10007;  |  我的捐赠-`donates` 统计信息-`statistics_donate` 其他信息-`components` |
 
 + Response 200
 
@@ -386,11 +386,11 @@ _如何下载安装，具体参考链接文档_
 
 ### 参与单个项目信息 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-|  id  |  &#10007;  |  项目 id  |
-| cid  | &#10007; | 联系人 id |
-|  with  |  &#10007;  |  项目捐赠统计-`statistics_donate` 项目额外信息-`components` 我的捐赠-`donates` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+|  id  | string | &#10007;  |  项目 id  |
+| cid  | string | &#10007; | 联系人 id |
+|  with  | string |  &#10007;  |  项目捐赠统计-`statistics_donate` 项目额外信息-`components` 我的捐赠-`donates` |
 
 + Response 200
 
@@ -402,12 +402,12 @@ _如何下载安装，具体参考链接文档_
 
 ### 参与定期捐 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-|  cid  |  &#10007;  |  联系人 id  |
-| wechat_openid | &#10007; | 联系人微信 openid (和 cid 必填一项) |
-|  status | &#10007; | 状态 初始化-`inti` 绑定-`binded` 未绑定-`unbind` |
-|  with  |  &#10007;  |  我的捐赠-`donates` 绑定项目-`project` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+|  cid  | string | &#10007;  |  联系人 id  |
+| wechat_openid | string | &#10007; | 联系人微信 openid (和 cid 必填一项) |
+|  status | string | &#10007; | 状态 初始化-`inti` 绑定-`binded` 未绑定-`unbind` |
+|  with  | string | &#10007;  |  我的捐赠-`donates` 绑定项目-`project` |
 
 + Response 200
 
@@ -462,10 +462,10 @@ _如何下载安装，具体参考链接文档_
 
 ### 统计定期捐 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-|  cid  |  &#10007;  |  联系人 id  |
-| wechat_openid | &#10007; | 联系人微信 openid (和 cid 必填一项) |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+|  cid | string |  &#10007;  |  联系人 id  |
+| wechat_openid | string | &#10007; | 联系人微信 openid (和 cid 必填一项) |
 
 + Response 200
 
@@ -481,11 +481,11 @@ _如何下载安装，具体参考链接文档_
 
 ### 获取团队捐 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| cid  |  &#10004;  |  联系人 id  |
-| mine | &#10007; | 传入 1 表示获取我发起的团队捐 |
-| with | &#10007; | `donates`, `project`, `statistics_donate` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| cid  | string | &#10004;  |  联系人 id  |
+| mine | int | &#10007; | 传入 1 表示获取我发起的团队捐 |
+| with | string | &#10007; | `donates`, `project`, `statistics_donate` |
 
 + Response 200
 
@@ -534,11 +534,11 @@ _如何下载安装，具体参考链接文档_
 
 ## 统计团队捐 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| cid  |  &#10004;  |  联系人 id  |
-| me | &#10007; | 传入 1 表示获取我参与的团队捐 |
-| mine | &#10007; | 我发起的定期捐 (me, mine 两个参数最少传 1 个) |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| cid | string |  &#10004;  |  联系人 id  |
+| me | int | &#10007; | 传入 1 表示获取我参与的团队捐 |
+| mine | int | &#10007; | 我发起的定期捐 (me, mine 两个参数最少传 1 个) |
 
 + Response 200
 
@@ -561,11 +561,11 @@ _如何下载安装，具体参考链接文档_
 
 ### 获取填写的表单列表 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| cid  |  &#10004;  |  联系人 id  |
-| order_by  |  &#10007;  |  `id` `sequence` `create_time` `update_time`  |
-| with | &#10007; | 统计-`statistics_form`, 我的填写-`form_fills` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| cid  | string | &#10004;  |  联系人 id  |
+| order_by  | string | &#10007;  |  `id` `sequence` `create_time` `update_time`  |
+| with | string | &#10007; | 统计-`statistics_form`, 我的填写-`form_fills` |
 
 + Response 200
 
@@ -606,9 +606,9 @@ _如何下载安装，具体参考链接文档_
 
 ### 查找 wechat_openid [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| cid  |  &#10004;  |  联系人 id  |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| cid  | string | &#10004;  |  联系人 id  |
 
 + Response 200
 
@@ -623,9 +623,9 @@ _如何下载安装，具体参考链接文档_
 
 ### 查找 cid [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| wechat_openid  |  &#10004;  |  微信 openid  |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| wechat_openid  | string | &#10004;  |  微信 openid  |
 
 + Response 200
 
@@ -644,12 +644,12 @@ _如何下载安装，具体参考链接文档_
 
 ### 活动列表 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| cid  |  &#10004;  |  联系人 id  |
-| type_id  |  &#10007;  |  活动类型 id  |
-| order_by | &#10007; | `id`, `update_time`, `create_time` |
-| with | &#10007; | 活动附件-`attachments`, 用户参与活动的信息-`info`(需要传 `cid` 时才生效) |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| cid  | string | &#10004;  |  联系人 id  |
+| type_id  | string | &#10007;  |  活动类型 id  |
+| order_by | string | &#10007; | `id`, `update_time`, `create_time` |
+| with |  string | &#10007; | 活动附件-`attachments`, 用户参与活动的信息-`info`(需要传 `cid` 时才生效) |
 
 + Response 200
 
@@ -695,10 +695,10 @@ _如何下载安装，具体参考链接文档_
 
 ### 单个活动信息 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| id  |  &#10004;  |  活动 id  |
-| with | &#10007; | 活动附件-`attachments` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| id  | string |  &#10004;  |  活动 id  |
+| with | string | &#10007; | 活动附件-`attachments` |
 
 + Response 200
 
@@ -733,14 +733,14 @@ _如何下载安装，具体参考链接文档_
 
 ### 捐赠项目列表 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| category_id | &#10007; | 分类 id |
-| status | &#10007; | 项目状态 草稿-`draft` 已发布-`published` 已关闭-`closed` |
-| type | &#10007; | 项目类型 单次捐-`singletime` 定期捐-`periodic` |
-| is_special | &#10007; | 是否置顶 0, 1 |
-| order_by | &#10007; | `sum_paid`, `count_user_paid`, `create_time`, `update_time` |
-| with  |  &#10007;  |  统计信息-`statistics_donate` 其他信息-`components`  |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| category_id | string | &#10007; | 分类 id |
+| status | string | &#10007; | 项目状态 草稿-`draft` 已发布-`published` 已关闭-`closed` |
+| type | string | &#10007; | 项目类型 单次捐-`singletime` 定期捐-`periodic` |
+| is_special | int | &#10007; | 是否置顶 0, 1 |
+| order_by | string | &#10007; | `sum_paid`, `count_user_paid`, `create_time`, `update_time` |
+| with  | string |  &#10007;  |  统计信息-`statistics_donate` 其他信息-`components`  |
 
 + Response 200
 
@@ -831,10 +831,10 @@ _如何下载安装，具体参考链接文档_
 
 ### 获取单个项目 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| id  |  &#10004;  |  项目 id  |
-| with | &#10007; | 不需要任何 with, 默认给出信息 |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| id  | string | &#10004;  |  项目 id  |
+| with | string | &#10007; | 不需要任何 with, 默认给出信息 |
 
 + Response
 
@@ -846,12 +846,12 @@ _如何下载安装，具体参考链接文档_
 
 ### 获取项目留言列表 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| pid  |  &#10004;  |  项目 id  |
-| status | &#10007; | 留言状态 发布-`published` 草稿-`draft` |
-| order_by | &#10007; | `create_time`, `sequence` |
-| with | &#10007; | 留言用户信息-`user` 回复信息-`replys` 点赞信息-`likes` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| pid  | string | &#10004;  |  项目 id  |
+| status | string | &#10007; | 留言状态 发布-`published` 草稿-`draft` |
+| order_by | string | &#10007; | `create_time`, `sequence` |
+| with | string | &#10007; | 留言用户信息-`user` 回复信息-`replys` 点赞信息-`likes` |
 
 + Response
 
@@ -917,10 +917,10 @@ _如何下载安装，具体参考链接文档_
 
 ### 获取单条留言 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| id  |  &#10004;  |  留言 id  |
-| with | &#10007; | 留言用户信息-`user` 回复信息-`replys` 点赞信息-`likes` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| id  | string | &#10004;  |  留言 id  |
+| with | string | &#10007; | 留言用户信息-`user` 回复信息-`replys` 点赞信息-`likes` |
 
 + Response
 
@@ -932,13 +932,13 @@ _如何下载安装，具体参考链接文档_
 
 ### 获取项目捐赠列表 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| pid  |  &#10004;  |  项目 id  |
-| cid | &#10007; | 联系人 id |
-| status | &#10007; | 支付状态 已支付-`paid` 未支付-`unpaid` |
-| order_by | &#10007; | donate_amount create_time pay_time |
-| with | &#10007; | 捐赠用户信息-`user` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| pid  | string | &#10004;  |  项目 id  |
+| cid | string | &#10007; | 联系人 id |
+| status | string | &#10007; | 支付状态 已支付-`paid` 未支付-`unpaid` |
+| order_by | string | &#10007; | donate_amount create_time pay_time |
+| with | string | &#10007; | 捐赠用户信息-`user` |
 
 + Response
 
@@ -989,10 +989,10 @@ _如何下载安装，具体参考链接文档_
 
 ### 获取项目单条捐款信息 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| id  |  &#10004;  |  捐款 id  |
-| with | &#10007; | 捐赠用户信息-`user` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| id  | string | &#10004;  |  捐款 id  |
+| with | string | &#10007; | 捐赠用户信息-`user` |
 
 + Response
 
@@ -1004,10 +1004,10 @@ _如何下载安装，具体参考链接文档_
 
 ### 获取项目进度列表 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| pid  |  &#10004;  |  项目 id  |
-| with | &#10007; | `project` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| pid  | string | &#10004;  |  项目 id  |
+| with | string | &#10007; | `project` |
 
 + Response
 
@@ -1058,11 +1058,11 @@ _如何下载安装，具体参考链接文档_
 
 ## 获取表单列表 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| category_id  |  &#10007;  |  分类 id  |
-| status | &#10007;  | 草稿-`draft` 发布-`published` |
-| order_by  |  &#10007;  |  `id` `sequence` `create_time` `update_time`  |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| category_id  | string | &#10007;  |  分类 id  |
+| status | string | &#10007;  | 草稿-`draft` 发布-`published` |
+| order_by  | string | &#10007;  |  `id` `sequence` `create_time` `update_time`  |
 
 + Response
 
@@ -1087,9 +1087,9 @@ _如何下载安装，具体参考链接文档_
 
 ## 获取单个表单 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| id  |  &#10004;  |  表单 id  |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| id  | string | &#10004;  |  表单 id  |
 
 + Response
 
@@ -1101,11 +1101,11 @@ _如何下载安装，具体参考链接文档_
 
 ## 获取单个表单填表信息列表 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| form_id |  &#10004;  |  表单 id  |
-| order_by | &#10007; | `id`, `create_time`, `update_time` |
-| with | &#10007; | 联系人-`contact` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| form_id | string |  &#10004;  |  表单 id  |
+| order_by | string | &#10007; | `id`, `create_time`, `update_time` |
+| with | string | &#10007; | 联系人-`contact` |
 
 + Response
 
@@ -1136,10 +1136,10 @@ _如何下载安装，具体参考链接文档_
 
 ## 获取单个表单的单个填表信息 [GET]
 
-| 名称   |  必填  |  说明  |
-| :-- | :--: | :-- |
-| id |  &#10004;  |  form_fill id  |
-| with | &#10007; | 联系人-`contact`, 表单-`form` |
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| id | string | &#10004;  |  form_fill id  |
+| with | string | &#10007; | 联系人-`contact`, 表单-`form` |
 
 + Response
 
@@ -1204,7 +1204,7 @@ _如何下载安装，具体参考链接文档_
 
 在获取 `name` 值得时候，有几个字段的 `name`值比较特殊，现在下表说明，调用过程中一定要注意这个部分。
 
-|  序号  |	字段页面描述	|  字段 name  |  说明  |
+|  序号  |	字段描述	|  字段 name  |  说明  |
 | --- | --- | --- |--- |
 |  1  |  捐款金额  |  donate_amount  | 捐款金额在不同的页面都有出现，这个字段主要用来设置捐款的金额，因为在页面中比较难发现，特在此指出  |
 |  2  |  筹款目标  |  goal  | 筹款目标出现在团队捐团队创建页面，为避免与捐款金额混淆，特在此指出  |
