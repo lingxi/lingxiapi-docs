@@ -48,7 +48,6 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 * 验证调用返回或微信主动通知签名时，传送的signature参数不参与签名，将生成的签名与该signature参数值作校验。
 * 接口可能会增加字段，验证签名时必须支持增加的扩展字段
 
-
 **获取 api_key 和 api_secret**
 
 灵析系统会为每个灵析账户分配一个api_key和api_secret, 请向灵析技术人员索取
@@ -56,6 +55,10 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 <br/>
 
 ## 参数及返回类型说明
+
+:::warning
+返回结果都是 unicode 编码
+:::
 
 **分页参数**
 
@@ -314,13 +317,13 @@ _如何下载安装，具体参考链接文档_
                 "donate_certificate": { // 项目每次捐赠证书配置
                   "config": {
                     "is_enable": "0",
-                    "cert_template_id": "0"
+                    "cert_template_id": "carp7vl4kq13904we81ez6m2yxoez5wg" // (string) 证书 id
                   }
                 },
                 "project_donate_certificate": { // 项目级别证书
                   "config": {
                     "is_enable": "0",
-                    "cert_template_id": "0"
+                    "cert_template_id": "carp7vl4kq13904we81ez6m2yxoez5wg"
                   }
                 },
                 "goal": { // 项目目标
@@ -412,35 +415,35 @@ _如何下载安装，具体参考链接文档_
 
 
             {
-              "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2",
-              "interval": "monthly",
-              "donate_amount": "100.00",
-              "status": "binded",
-              "is_anonymous": false,
-              "bind_time": 1462982400,
-              "next_pay_time": 0,
+              "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2", // (string) 关联项目 id
+              "interval": "monthly", // (string) 类型, monthly(月捐), weekly(周捐), daily(日捐)
+              "donate_amount": "100.00", // (float) 金额
+              "status": "binded", // (string) 状态, binded(绑定), unbinded(解绑), init(初始化)
+              "is_anonymous": false, // (bool) 是否匿名
+              "bind_time": 1462982400, // (int) 绑定时间
+              "next_pay_time": 0, // (int) 下次扣款时间
               "create_time": 1468495900,
               "update_time": 1468495903,
-              "comment": "",
-              "manage_link": "http://cfnew.lingxi.com/periodic/caz9x45erm3o21kp0g108q9ygw7lvnz2",
-              "donates": [
+              "comment": "", // (string) 评论
+              "manage_link": "http://cfnew.lingxi.com/periodic/caz9x45erm3o21kp0g108q9ygw7lvnz2", // (string) 管理链接
+              "donates": [ // (array)
                   {
                       "id": "camrp4nyx9v1wdy321g4v6gzloqk783e",
                       "project_id": "ca924lkpryz7m38qd97x09vxe2n15wog",
                       "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm",
                       "user_project_id": "ca17nxo5qvzl9gm10q507w3rp24e8ykw",
                       "contact_id": "canrp7vl4kq13904lp8vdm2yxoez5wg8",
-                      "donate_amount": "1.00",
-                      "flow_number": "",
-                      "status": "paid",
-                      "pay_time": 0,
-                      "donate_cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm",
-                      "comment": "",
+                      "donate_amount": 1.01, // (float) 支付金额
+                      "flow_number": "k1nrp7vl4kq13904lp8vdm2yxoez5wg8", // (string) 微信，支付宝订单流水号
+                      "status": "paid", // (string) 已支付-`paid`, 未支付-`unpaid`
+                      "pay_time": 0, // (int) 付款时间
+                      "donate_cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // (string) 筹款用户 id
+                      "comment": "", // (string) 留言
                       "create_time": 1442064826,
                       "update_time": 1442064826
                   }
               ],
-              "project": {
+              "project": { // 同项目字段
                   "id": "caz9x45erm3o21kp0g108q9ygw7lvnz2",
                   "type": "periodic",
                   "title": "清华大学新百年基金",
@@ -469,9 +472,9 @@ _如何下载安装，具体参考链接文档_
   + Body
 
             {
-              "count_join": 2,
-              "count_paid": 3,
-              "sum_paid": 7.10
+              "count_join": 2, // (int) 加入的定期捐个数
+              "count_paid": 3, // (int) 定期捐扣款次数
+              "sum_paid": 7.10 // (float) 扣款金额
             }
 
 ## 获取团队捐，我参与和发起的 [/contact/cf_project/user_project/list]
@@ -489,13 +492,13 @@ _如何下载安装，具体参考链接文档_
   + Body
 
             {
-              "project_id": "cawn9v23wqo8z7m0n8w80kl5eg4py1rx",
-              "goal": "2000.00",
-              "title": "交大零八届三班",
-              "comment": "匆匆岁月，我们一起奋斗一起长大。饮水思源、助力母校，让更多的师弟师妹茁长成长。",
+              "project_id": "cawn9v23wqo8z7m0n8w80kl5eg4py1rx", // (string) 项目 id
+              "goal": "2000.00", // (string) 目标金额
+              "title": "交大零八届三班", // (string) 团队标题
+              "comment": "匆匆岁月，我们一起奋斗一起长大。饮水思源、助力母校，让更多的师弟师妹茁长成长。", // (string) 团队描述
               "update_time": 1442570268,
               "create_time": 1442570268,
-              "project": {
+              "project": { // 同项目
                   "id": "cawn9v23wqo8z7m0n8w80kl5eg4py1rx",
                   "type": "singletime",
                   "title": "一起捐定额筹款",
@@ -508,7 +511,7 @@ _如何下载安装，具体参考链接文档_
                   "update_time": 1463654233,
                   "link": "http://cfnew.lingxi.com/p/cawn9v23wqo8z7m0n8w80kl5eg4py1rx"
               },
-              "donates": [
+              "donates": [ // (array) 同捐赠
                 {
                   "id": "ca94ygk2w7p3n0z5zx93z085m1rxoveq",
                   "project_id": "ca924lkpryz7m38qd97x09vxe2n15wog",
@@ -544,13 +547,13 @@ _如何下载安装，具体参考链接文档_
 
             {
               "mine": {
-                "count_create_user_project": 8, // 创建的团队捐个数
-                "count_user_paid": 2, // 独立用户参与人数
-                "sum_paid": "33905.74" // 已筹金额
+                "count_create_user_project": 8, // (int) 创建的团队捐个数
+                "count_user_paid": 2, // (int) 独立用户参与人数
+                "sum_paid": "33905.74" // (int) 已筹金额
               },
               "me": {
-                "count_donate_user_project": 58, // 捐赠的团队捐个数
-                "sum_paid": "128072.35" // 个人参与团队捐捐赠金额
+                "count_donate_user_project": 58, // (int) 捐赠的团队捐个数
+                "sum_paid": 128072.35 // (float) 个人参与团队捐捐赠金额
               }
             }
 
@@ -561,6 +564,7 @@ _如何下载安装，具体参考链接文档_
 | 名称   |  必填  |  说明  |
 | :-- | :--: | :-- |
 | cid  |  &#10004;  |  联系人 id  |
+| order_by  |  &#10007;  |  `id` `sequence` `create_time` `update_time`  |
 | with | &#10007; | 统计-`statistics_form`, 我的填写-`form_fills` |
 
 + Response 200
@@ -569,23 +573,23 @@ _如何下载安装，具体参考链接文档_
 
 
             {
-              "title": "基本的功能完成了0",
-              "summary": "还要再增加一个备注\r\n感谢您在百忙之中抽出时间填写问卷，我们将在答卷中抽取幸运用户送上精美小礼品一份！\r\n备注可以得修改名称备注可以得修改名称！\r\n",
-              "status": "published",
-              "start_time": 0,
-              "end_time": 0,
+              "title": "基本的功能完成了0", // (string) 表单标题
+              "summary": "还要再增加一个备注\r\n感谢您在百忙之中抽出时间填写问卷，我们将在答卷中抽取幸运用户送上精美小礼品一份！\r\n备注可以得修改名称备注可以得修改名称！\r\n", // (string) 表单描述
+              "status": "published", // (string) 状态
+              "start_time": 0, // (int) 开始时间
+              "end_time": 0, // (int) 结束时间
               "create_time": 1394364652,
               "update_time": 1395390441,
-              "sequence": 0,
-              "statistics_form": {
+              "sequence": 0, // (int) 权重
+              "statistics_form": { // 表单统计
                   "form_id": "cavlypqrolg7zwk463z0v8xem3295n1x",
-                  "count_fill": 26
+                  "count_fill": 26 // (int) 填写数量
               },
-              "link": "http://f.lingxi360.com/f/?token=KDR0cl4Gz7RyhDOhhkImP_ENi",
-              "form_fills": [
+              "link": "http://f.lingxi360.com/f/?token=KDR0cl4Gz7RyhDOhhkImP_ENi", // (string) 表单链接
+              "form_fills": [ // 我的表单填写数据
                   {
                       "id": "cam7klxnremov5gydo1019z84pwq237o",
-                      "data": {
+                      "data": { // 填写内容
                           "name": "郭润苗",
                           "mobile": "13426422862",
                           "email": "guorunmiao@qq.com",
@@ -593,7 +597,7 @@ _如何下载安装，具体参考链接文档_
                           "note": "18d95846d271ab3e8915445951db3918",
                           "form_token": "abff503089dcb657f76a4aa04a40af33"
                       },
-                      "create_time": 1395039403
+                      "create_time": 1395039403 // (int) 填写时间
                   }
               ]
             }
@@ -612,7 +616,7 @@ _如何下载安装，具体参考链接文档_
 
 
             {
-              "wechat_openid": "o22Yxtw0NnD69pUhKRKFMhgcU8lY"
+              "wechat_openid": "o22Yxtw0NnD69pUhKRKFMhgcU8lY" // (string)
             }
 
 ## 查找 cid [/contact/query/cid]
@@ -629,7 +633,7 @@ _如何下载安装，具体参考链接文档_
 
 
             {
-              "cid": "ca2lo512p4q3yewvdkevdzgl8mknx7r9"
+              "cid": "ca2lo512p4q3yewvdkevdzgl8mknx7r9" // (string)
             }
 
 # Data Structures
@@ -653,22 +657,22 @@ _如何下载安装，具体参考链接文档_
 
 
             {
-              "contact_user": "Rry", // 活动创建人名称
-              "title": "故宫一日游", // 活动名称
-              "type_id": "cam1nrp7vl4kq1396490m2yxoez5wg8w", // 活动分类 id
-              "description": "", // 活动说明
-              "image": "", // 活动图片
-              "event_time": 0, // 管理员自己写的活动开始时间
-              "event_duration": 0, // 活动时长
-              "relate_link": "", // 活动关联链接
+              "contact_user": "Rry", // (string) 活动创建人名称
+              "title": "故宫一日游", // (string) 活动名称
+              "type_id": "cam1nrp7vl4kq1396490m2yxoez5wg8w", // (string) 活动分类 id
+              "description": "", // (string) 活动说明
+              "image": "", // (string) 活动图片
+              "event_time": 0, // (int) 管理员自己写的活动开始时间
+              "event_duration": 0, // (int) 活动时长
+              "relate_link": "", // (string) 活动关联链接
               "create_time": 1465963851,
               "update_time": 1465963851,
-              "attachments": [
+              "attachments": [ // (array) 附件
                   {
-                    "path": "http://file.lxi.me/page/2014/0829/79dd0e0fb11881562fbbdca807980bc213084652.jpg",
-                    "ext": "jpg",
-                    "mimetype": "image/jpeg",
-                    "size": 48728
+                    "path": "http://file.lxi.me/page/2014/0829/79dd0e0fb11881562fbbdca807980bc213084652.jpg", // (string) 路径
+                    "ext": "jpg", // (string) 文件后缀
+                    "mimetype": "image/jpeg", // (string) 文件类型
+                    "size": 48728 // (int) 大小
                   },
                   {
                     "path": "http://file.lxi.me/attachment/2015/0627/a6158a1276dbb246e258ab37ce98f3a6.docx",
@@ -679,11 +683,11 @@ _如何下载安装，具体参考链接文档_
               },
               "info": { // 有 cid 同时 with 了 info 才会查询出现
                 "id": "cam1nrp7vl4kq1396490m2yxoez5wg8w",
-                "event_id": "cam1nrp7vl4kq1396490m2yxoez5wg8w", // 活动 id
-                "contact_id": "cam1nrp7vl4kq1396490m2yxoez5wg8w", // 联系人 id
-                "create_time": 1465963850, // 联系人加入活动时间
-                "duration": 8, // 联系人参与时间
-                "score": 2 // 参与这次活动积分
+                "event_id": "cam1nrp7vl4kq1396490m2yxoez5wg8w", // (string) 活动 id
+                "contact_id": "cam1nrp7vl4kq1396490m2yxoez5wg8w", // (string) 联系人 id
+                "create_time": 1465963850, // (int) 联系人加入活动时间
+                "duration": 8, // (int) 联系人参与时间
+                "score": 2 // (int) 参与这次活动积分
               }
             }
 
@@ -700,7 +704,7 @@ _如何下载安装，具体参考链接文档_
 
   + Body
 
-            {
+            { // 同上列表内容
               "contact_user": "易昕",
               "title": "灵犀产品讨论日0",
               "type_id": "ca17nxo5qvzl9gm10q507w3rp24e8ykw",
@@ -743,41 +747,82 @@ _如何下载安装，具体参考链接文档_
   + Body
 
             {
-              "type": "singletime", // 类型 singletime - periodic
-              "cid": "ca17nxo5qvzl9gm10q507w3rp24e8ykw", // 分类 id
-              "title": "撸串众筹", // 标题
-              "summary": "", // 口号
-              "desc": "<p><span style=\"font-family: 微软雅黑, 'Microsoft YaHei'; line-height: 18px;\">testtest</span></p>", // 描述
-              "is_special": false, // 是否置顶
-              "preview_image": "/attachment/2015/0915/4cf0c61a6aa6b26b3e48a17205c44a14.jpg", // 预览图
-              "sequence": 0, // 排序
-              "status": "published", // 状态 published - closed - draft
+              "type": "singletime", // (string) 类型 singletime - periodic
+              "cid": "ca17nxo5qvzl9gm10q507w3rp24e8ykw", // (string) 分类 id
+              "title": "撸串众筹", // (string) 标题
+              "summary": "", // (string) 口号
+              "desc": "<p><span style=\"font-family: 微软雅黑, 'Microsoft YaHei'; line-height: 18px;\">testtest</span></p>", // (string) 描述
+              "is_special": false, // (string) 是否置顶
+              "preview_image": "/attachment/2015/0915/4cf0c61a6aa6b26b3e48a17205c44a14.jpg", // (string) 预览图
+              "sequence": 0, // (string) 排序
+              "status": "published", // (string) 状态 `published` - `closed` - `draft`
               "create_time": 1442032723,
               "update_time": 1463717527,
-              "sum_paid": "0.00", // 目前捐款
-              "count_user_paid": 0, // 目前捐款人次
+              "sum_paid": 0.01, // (float) 目前捐款
+              "count_user_paid": 0, // (int) 目前捐款人次
               "components": {
-                "goal": { // 筹款目标
-                  "is_enable": false, // 是否开启
-                  "is_enable_achieved_donate": false, // 是否达到目标
-                  "goal_num": "" // 目标金额
+                "periodic": { // 定期捐信息
+                  "information": {
+                    "is_enabled": "1", // (string) 是否开启分档筹款
+                    "options": [
+                      {
+                        "money": "6", // (string) 额度
+                        "desc": "一个羊肉串",
+                        "limit_num": "100"
+                      },
+                      {
+                        "money": "8",
+                        "desc": "一串鸡翅",
+                        "limit_num": "100"
+                      },
+                      {
+                        "money": "60",
+                        "desc": "一个靠羊腿",
+                        "limit_num": "100"
+                      }
+                    ],
+                    "is_input_allowed": "false" // 是否允许用户自己输入额度
+                  }
                 },
-                "expire": { // 筹款结束时间
-                  "is_enable": true, // 是否开启
-                  "expire_time": 1355281871 // 时间戳
+                "donate_certificate": { // 项目每次捐赠证书配置
+                  "config": {
+                    "is_enable": "0",
+                    "cert_template_id": "0"
+                  }
                 },
-                "success_number_limit": { // 是否限制支持人数上限
-                  "is_enable": false, // 是否开启
-                  "limit_num": "" // 人数
+                "project_donate_certificate": { // 项目级别证书
+                  "config": {
+                    "is_enable": "0",
+                    "cert_template_id": "0"
+                  }
+                },
+                "goal": { // 项目目标
+                  "is_enable": false, // (bool) 是否开启
+                  "is_enable_achieved_donate": false, // (bool) 达到目标是否可以继续捐赠
+                  "goal_num": 0 // 目标金额
+                },
+                "expire": { // 项目到期时间
+                  "is_enable": false, // (bool) 是否开启
+                  "expire_time": 0 // (int) 过期时间
+                },
+                "success_number_limit": { // 捐赠次数上限
+                  "is_enable": false, // (bool) 是否开启
+                  "limit_num": 0 // (int) 次数限制
                 }
               },
               "statistics_donate": {
-                "sum": "40.00", // 总记算没有成功付款的订单
-                "sum_paid": "0.00", // 成功捐款
-                "count": 2, // 全部订单数量
-                "count_paid": 0, // 付款订单熟练
-                "count_user": 1, // 捐款用户数量，合计没有付款
-                "count_user_paid": 0 // 成功捐款人次
+                "sum": 602.6, // (float) 总筹款额(包括额外捐赠)
+                "sum_paid": 600, // (float) 总筹款额(不包括额外捐赠)
+                "count": 8, // (int) 总捐款次数(包括额外次数)
+                "count_paid": 8, // (int) 总付款次数
+                "count_user": 1, // (int) 总捐款人数
+                "count_user_paid": 1, // (int) 总捐款人数(包括额外次数)
+                "percent": 0, // (int) 项目进度(不超过100)
+                "percent_round": 0, // (int) 项目绝对进度(可以超过 100)
+                "is_achieved": false, // (bool) 是否达到目标
+                "is_expired": true, // (bool) 是否到期
+                "is_over_limit": false, // (bool) 是否超出目标
+                "is_donatable": false // (bool) 是否可以继续捐赠
               }
               "link": "http://cfnew.lingxi.com/p/cam1nrp7vl4kq1396490m2yxoez5wg8w" // 项目链接
             }
@@ -814,11 +859,11 @@ _如何下载安装，具体参考链接文档_
 
 
             {
-              "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // 留言用户 id
-              "comment": "999", // 留言内容
-              "sequence": 3, // 排序
-              "status": "published", // 状态
-              "is_anonymous": true, // 是否匿名
+              "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // (string) 留言用户 id
+              "comment": "999", // (string) 留言内容
+              "sequence": 3, // (int) 排序权重
+              "status": "published", // (string) 状态 发布-`published` 草稿-`draft`
+              "is_anonymous": true, // (float) 是否匿名
               "create_time": 1465884702,
               "update_time": 1465884702,
               "replys": [ // 回复
@@ -837,7 +882,7 @@ _如何下载安装，具体参考链接文档_
                 }
               ],
               "count_like": 1, // 点赞数量
-              "user": {
+              "user": { // 留言用户信息
                 "team_id": "ca4k18e2n3gk9rz76l7dwoymvl45xqpl",
                 "type": "wechat",
                 "openid": "o22Yxt3ey8oNo-0YTDTN3gxYogKQ", // 微信 openid
@@ -857,11 +902,11 @@ _如何下载安装，具体参考链接文档_
                 "update_time": 1440390574,
                 "create_time": 1438491910
               },
-              "likes": [
+              "likes": [ // 点赞信息列表
                 {
-                  "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm",
-                  "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2",
-                  "comment_id": "caqox9g48omp21rydm520vew7n5qkz3l",
+                  "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // (string)
+                  "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2", // (string)
+                  "comment_id": "caqox9g48omp21rydm520vew7n5qkz3l", // (string)
                   "update_time": 1468816012,
                   "create_time": 1468816012
                 }
@@ -901,16 +946,16 @@ _如何下载安装，具体参考链接文档_
 
 
           {
-            "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2", // 项目 id
-            "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // 项目创建人 id
-            "user_project_id": "ca17nxo5qvzl9gm10q507w3rp24e8ykw",
-            "contact_id": "capyw3m54kreo807w8ok692vnxglzq71",
-            "donate_amount": "1000.00", // 捐款额
-            "flow_number": "1006930077201509180918911789", // 支付宝，微信流水号
-            "status": "paid", // 状态
-            "pay_time": 1442571809, // 支付时间
-            "donate_cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // 捐款人 id
-            "comment": "", // 捐款留言
+            "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2", // (string) 项目 id
+            "cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // (string) 项目创建人 id
+            "user_project_id": "ca17nxo5qvzl9gm10q507w3rp24e8ykw", // (string) 团队捐项目 id
+            "contact_id": "capyw3m54kreo807w8ok692vnxglzq71", // (string) 联系人 id
+            "donate_amount": 1000.01, // (float) 捐款额
+            "flow_number": "1006930077201509180918911789", // (string) 支付宝，微信流水号
+            "status": "paid", // (string) 状态
+            "pay_time": 1442571809, // (int) 支付时间
+            "donate_cf_user_id": "caqox9g48omp21rydmpdvew7n5qkz3lm", // (string) 捐款人 id
+            "comment": "", // (string) 捐款留言
             "create_time": 1442571788,
             "update_time": 1442571788,
             "donate_form_data": {
@@ -970,18 +1015,18 @@ _如何下载安装，具体参考链接文档_
 
 
             {
-              "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2",
-              "title": "Nam magni voluptatibus aut aut quas molestiae et.",
-              "desc": "Laudantium sunt sint ut eaque autem. Architecto aut est aperiam. Accusamus iusto molestiae voluptate eos soluta et dicta eum. Eum et est est blanditiis deserunt sed aspernatur. Facilis magni ut occaecati vero.",
-              "image": [
+              "project_id": "caz9x45erm3o21kp0g108q9ygw7lvnz2", // (string) 项目 id
+              "title": "Nam magni voluptatibus aut aut quas molestiae et.", // (string) 进度标题
+              "desc": "Laudantium sunt sint ut eaque autem. Architecto aut est aperiam. Accusamus iusto molestiae voluptate eos soluta et dicta eum. Eum et est est blanditiis deserunt sed aspernatur. Facilis magni ut occaecati vero.", // (string) 进度描述
+              "image": [ // (array) 进度图片
                   {
                       "path": "http:\\/\\/file.lxi.me\\/uploadify\\/20160503\\/57281c13efc20.jpg"
                   }
               ],
-              "progress_time": "2016-08-30 18:23:59",
+              "progress_time": "2016-08-30 18:23:59", // (string) 进度时间
               "create_time": 1472552639,
               "update_time": 1472552639,
-              "project": {...}
+              "project": {...} // 同项目字段
             }
 
 ### 获取项目分类 [/cf_project/category/list]
@@ -998,33 +1043,9 @@ _如何下载安装，具体参考链接文档_
                 "type": "category",
                 "id": "ca924lkpryz7m38q09x09vxe2n15wog4",
                 "attributes": {
-                  "name": "学院发展基金筹款项目",
-                  "create_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
-                  "update_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
+                  "name": "学院发展基金筹款项目", // (string) 分类标题
                   "create_time": 1464624000,
                   "update_time": 1464624000
-                }
-              },
-              {
-                "type": "category",
-                "id": "ca43en47pzywmr8g01z61vkxlq2o953p",
-                "attributes": {
-                "name": "学校发展基金筹款项目",
-                  "create_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
-                  "update_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
-                  "create_time": 1462896000,
-                  "update_time": 1463500800
-                }
-              },
-              {
-                "type": "category",
-                "id": "capxpyw3m54kreo8075692vnxglzq71z",
-                "attributes": {
-                  "name": "十二项线上筹款项目",
-                  "create_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
-                  "update_user_id": "caqox9g48omp21rydm9w6vew7n5qkz3l",
-                  "create_time": 1463500800,
-                  "update_time": 1463500800
                 }
               }
             ]
@@ -1041,24 +1062,24 @@ _如何下载安装，具体参考链接文档_
 | :-- | :--: | :-- |
 | category_id  |  &#10007;  |  分类 id  |
 | status | &#10007;  | 草稿-`draft` 发布-`published` |
-| order_by  |  &#10007;  |  `id` `create_time` `update_time`  |
+| order_by  |  &#10007;  |  `id` `sequence` `create_time` `update_time`  |
 
 + Response
 
   + Body
             {
-            "type": "form",
-            "id": "ca9r4x83g5ep9wn6rn7g0mlo1qyzv27k",
-            "attributes": {
-              "title": "扫我啊", // 标题
-              "summary": "<p><img src=\"http://file.lxi.me/uploadify/20160616/57624f695c980.png-scale560\" title=\"QQ截图20160501121853.png\" // 具体描述 alt=\"QQ截图20160501121853.png\"/>+</p><p>+face++</p>",
-              "status": "published", // 状态
-              "start_time": 1468239349, // 开始报名时间
-              "end_time": 1468239349, // 结束报名时间
-              "create_time": 1468239349, // 项目创建时间
-              "update_time": 1468464835, // 更新时间
-              "sequence": 0, // 排序
-              "link": "http://f.lingxi360.com/?token=cNMnkTwiFTamcTwnN" // 链接
+              "type": "form",
+              "id": "ca9r4x83g5ep9wn6rn7g0mlo1qyzv27k",
+              "attributes": {
+                "title": "扫我啊", // (string) 标题
+                "summary": "<p><img src=\"http://file.lxi.me/uploadify/20160616/57624f695c980.png-scale560\" title=\"QQ截图20160501121853.png\" // 具体描述 alt=\"QQ截图20160501121853.png\"/>+</p><p>+face++</p>", // (string) 描述
+                "status": "published", // (string) 状态
+                "start_time": 1468239349, // (int) 开始报名时间
+                "end_time": 1468239349, // (int) 结束报名时间
+                "create_time": 1468239349, // (int) 项目创建时间
+                "update_time": 1468464835, // (int) 更新时间
+                "sequence": 0, // (int) 排序
+                "link": "http://f.lingxi360.com/?token=cNMnkTwiFTamcTwnN" // (string) 链接
               }
             }
 
@@ -1074,6 +1095,56 @@ _如何下载安装，具体参考链接文档_
 
 ```bash
 同表单列表
+```
+
+## 获取单个表单填表信息列表 [/form/form_fill/list]
+
+## 获取单个表单填表信息列表 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| form_id |  &#10004;  |  表单 id  |
+| order_by | &#10007; | `id`, `create_time`, `update_time` |
+| with | &#10007; | 联系人-`contact` |
+
++ Response
+
+  + Body
+
+
+            [
+              "type": "form_fill",
+              "id": "ca9r4x83g5ep9wn6r9xx6mlo1qyzv27k",
+              "attributes": {
+                "form_id": "ca7nxo5qvzl9gm1dq2gkd7w3rp24e8yk", // (string)
+                "data": { // 填写数据
+                  "name": "邓铠易",
+                  "mobile": "13720050963",
+                  "email": "bupteasy@gmail.com",
+                  "new_item_1": "移动互联网"
+                },
+                "contact_id": "canxv8z25kyqo768gxngm0epgm1rlw94", // 联系人 id
+                "create_time": 1403665577,
+                "update_time": 0
+              },
+              "contact": { // 同联系人
+                ...
+              }
+            ]
+
+## 获取单个表单的单个填表信息 [/form/form_fill/show]
+
+## 获取单个表单的单个填表信息 [GET]
+
+| 名称   |  必填  |  说明  |
+| :-- | :--: | :-- |
+| id |  &#10004;  |  form_fill id  |
+| with | &#10007; | 联系人-`contact`, 表单-`form` |
+
++ Response
+
+```bash
+同上
 ```
 
 # Data Structures
