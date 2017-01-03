@@ -1264,3 +1264,56 @@ string: _unchangeable_name=默认 0 #_unchangeable_*，* 代表页面中存在�
 http://cf.lingxi360.com/p/LXE8G6B_tyG=GOAF?_default_donate_project=50585&_setting_form_popup=1
 ```
 :::
+
+# Data Structures
+
+# Group 错误代码说明
+
+### 签名验证错误
+
+| 错误码 status_code   |  message  |  description  |
+| -- | -- | -- |
+|10001 | Miss required parameters, see doc for more info | 缺失验证参数，请参考 API 文档 |
+|10002 | Timestamp expire | 时间戳过期，请重新发起请求 |
+|10003 | Param error, see doc for more info | 验证参数错误，请参考API文档 |
+|10004 | Signature not valid... | 签名验证失败 |
+|10005 | Api key not exist, please contact lingxi manager. | Api Key 无效，请向灵析申请 |
+|10007 | Api request times overload... | API 请求过于频繁，请稍后重试 |
+|10009 | Partner key not exist, please contact lingxi manager. | Partner Key 无效，请向灵析申请 |
+|10011 | You must be our partner. | 你必须有 partner 级别的账号才能访 |
+
+### 请求获取数据错误
+
+| 错误码 status_code   |  message  |  description  |
+| -- | -- | -- |
+|20000 | Miss required parameters, see doc for more info | 接口所需参数不全，请参考 API 文档|
+|20001 | Contact not exist | 请求的联系人不存在|
+|20003 | Parameters not invalid | 好好看文档，看清楚参数说明|
+|20005 | Contact\'s Event not exist | 请求的联系人没有参与任何活动|
+|20007 | Role not exist in this team. | 没有找到这个身份|
+|20009 | There was no donate... | 目前并没有捐款记录|
+|20011 | No project you want... | 并没有符合条件的项目存在|
+|20013 | No Event you want... | 没有获取到任何活动信息|
+|20015 | No donate you want... | 捐款被黑洞吞噬了|
+|20017 | Not find any comments. | 没有找到任何留言信息|
+|20019 | Not find periodic project you join | 没有绑定任何定期捐|
+|20021 | Not find user project | 没有找到团队捐信息|
+|20023 | Not progress finded. | 没有任何项目进度信息|
+|20025 | Not category finded. | 没有任何分类|
+|20045 | Form, Form, Form, Not exist... | 没有获取到任何表单|
+|20047 | Cms Category Not exist... | 没有找到一个分类信息|
+|20047 | Cms Config not exist. | 没有获取到配置信息|
+|20049 | Cms content not exist. | 没有获取到内容信息|
+|20051 | Cms Banner not exist. | 没有获取到 Banner 信息|
+|20052 | Cms tag not exist. | 没有获取到标签信息|
+|20053 | Nobody take part in this event | 没有获取到任何活动参与信息|
+|20095 | Please config you wechat app id and secret | 赶紧去配置你的微信app id 和 secret|
+|20095 | Not found model | 没有查询到数据|
+|20097 | Some quert error | 亲爱的开发者，请仔细传递参数|
+|20099 | Throw a error when parse your parameters | 参数解析错误|
+
+### 其他
+
+| 错误码 status_code   |  message  |  description  |
+| -- | -- | -- |
+| 00000 | Not known error | 未知错误，请联系我们 |
