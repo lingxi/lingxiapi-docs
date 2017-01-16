@@ -1267,6 +1267,73 @@ http://cf.lingxi360.com/p/LXE8G6B_tyG=GOAF?_default_donate_project=50585&_settin
 
 # Data Structures
 
+# Group 筹款notify和redirect
+
+请求URL：`用户设置的筹款推送消息地址url`
+
+请求频率：`请求失败后会重发，最多8次`
+
+
+## 单次捐notify [POST]
+
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| money  | float | &#10004;  | 捐款金额  |
+| flow_number |string | &#10004;  | 捐款流水号 |
+| bind_id  | int | &#10007;  |  灵析绑定id，定期捐才有 |
+| order_id  | int | &#10004;  |  灵析订单id，除定期捐绑定 |
+| source  | string | &#10004;  | 来源，灵析代收，微信定期捐等 |
+| comment  | string | &#10007;  | 留言 |
+| pay_time  | string | &#10004;  | 付款时间 |
+| form_info  | json | &#10007;  | 填写表单信息 |
+| cid  | int | &#10007;  | 灵析联系人id |
+| extra_params  | string | &#10007;  | 第三方指定的其它参数 |
+| outer_uid  | string | &#10007;  | 第三方用户id |
+
+
+## 单次捐redirect [GET]
+
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| money  | float | &#10004;  | 捐款金额  |
+| flow_number |string | &#10004;  | 捐款流水号 |
+| bind_id  | int | &#10007;  |  灵析绑定id，定期捐才有 |
+| order_id  | int | &#10004;  |  灵析订单id |
+| source  | string | &#10004;  | 来源，灵析代收，微信定期捐等 |
+| cid  | int | &#10007;  | 灵析联系人id |
+| extra_params  | string | &#10007;  | 第三方指定的其它参数 |
+| outer_uid  | string | &#10007;  | 第三方用户id |
+
+
+## 定期捐绑定notify [POST]
+
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| money  | float | &#10004;  | 捐款金额  |
+| bind_id |int | &#10004;  | 灵析绑定id |
+| source  | string | &#10004;  |  来源，灵析代收，微信定期捐等 |
+| comment  | string | &#10007;  | 留言 |
+| bind_time  | string | &#10004;  | 绑定时间 |
+| form_info  | json | &#10007;  | 填写表单信息 |
+| cid  | int | &#10007;  | 灵析联系人id |
+| extra_params  | string | &#10007;  | 第三方指定的其它参数 |
+| outer_uid  | string | &#10007;  | 第三方用户id |
+
+
+## 定期捐扣款notify [POST]
+
+```bash
+同单次捐notify
+```
+
+## 定期捐redirect[GET]
+
+```bash
+同单次捐redirect
+```
+
+# Data Structures
+
 # Group 错误代码说明
 
 ### 签名验证错误
