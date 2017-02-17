@@ -1269,19 +1269,37 @@ http://cf.lingxi360.com/p/LXE8G6B_tyG=GOAF?_default_donate_project=50585&_settin
 
 # Group 筹款notify和redirect
 
-请求URL：`用户设置的筹款推送消息地址url`
+**接口说明：**
 
-请求频率：`请求失败后会重发，最多8次`
+- 用户在筹款项目中设置了成功回调地址之后，用户支付成功后会向设置的回调地址发送post请求，包含用户支付的信息。
+- 用户在筹款项目中设置了付款后跳转页面链接之后，用户支付成功后会跳转到设置的成功页面链接，包含用户支付的信息。
+- 第三方系统通过保存用户的支付信息，可以进行定制化的统计分析等功能。
+
+**实现步骤：**
+
+- 在灵析筹款后台设置成功回调地址，如果要指定付款成功页面还需要设置支持者付款后跳转页面链接。
+
+- 第三方系统引导用户访问传入第三方用户id信息的灵析筹款页面链接。
+
+- 用户支付完成或绑定成功后，灵析筹款会跳转到第三方指定成功页面并向指定回调地址发送携带用户支付或绑定信息的请求。
+
+**验证方式：**
+
+- 使用[lingxi api-authentication](https://github.com/LingxiTeam/api-authentication)签名验证
 
 
-## 单次捐notify [POST]
+### 单次捐notify
+
+- 请求方法：POST
+- 请求地址：用户设置的成功回调地址
+- 输入参数：如下
 
 | 名称   | 类型 |  必填  |  说明  |
 | :-- | :--: | :--: | :-- |
 | money  | float | &#10004;  | 捐款金额  |
 | flow_number |string | &#10004;  | 捐款流水号 |
-| bind_id  | int | &#10007;  |  灵析绑定id，定期捐才有 |
-| order_id  | int | &#10004;  |  灵析订单id，除定期捐绑定 |
+| bind_id  | int | &#10007;  |  灵析绑定id，定期捐扣款才有 |
+| order_id  | int | &#10004;  |  灵析订单id |
 | source  | string | &#10004;  | 来源，灵析代收，微信定期捐等 |
 | comment  | string | &#10007;  | 留言 |
 | pay_time  | string | &#10004;  | 付款时间 |
@@ -1291,27 +1309,35 @@ http://cf.lingxi360.com/p/LXE8G6B_tyG=GOAF?_default_donate_project=50585&_settin
 | outer_uid  | string | &#10007;  | 第三方用户id |
 
 
-## 单次捐redirect [GET]
+### 单次捐redirect
+
+- 请求方法：GET
+- 请求地址：用户设置的支持者付款后跳转页面链接
+- 输入参数：如下
 
 | 名称   | 类型 |  必填  |  说明  |
 | :-- | :--: | :--: | :-- |
 | money  | float | &#10004;  | 捐款金额  |
 | flow_number |string | &#10004;  | 捐款流水号 |
-| bind_id  | int | &#10007;  |  灵析绑定id，定期捐才有 |
+| bind_id  | int | &#10007;  |  灵析绑定id，定期捐redirect才有 |
 | order_id  | int | &#10004;  |  灵析订单id |
-| source  | string | &#10004;  | 来源，灵析代收，微信定期捐等 |
+| source  | string | &#10004;  | 来源，灵析代收等 |
 | cid  | int | &#10007;  | 灵析联系人id |
 | extra_params  | string | &#10007;  | 第三方指定的其它参数 |
 | outer_uid  | string | &#10007;  | 第三方用户id |
 
 
-## 定期捐绑定notify [POST]
+### 定期捐绑定notify
+
+- 请求方法：POST
+- 请求地址：用户设置的成功回调地址
+- 输入参数：如下
 
 | 名称   | 类型 |  必填  |  说明  |
 | :-- | :--: | :--: | :-- |
 | money  | float | &#10004;  | 捐款金额  |
 | bind_id |int | &#10004;  | 灵析绑定id |
-| source  | string | &#10004;  |  来源，灵析代收，微信定期捐等 |
+| source  | string | &#10004;  |  来源，微信定期捐等 |
 | comment  | string | &#10007;  | 留言 |
 | bind_time  | string | &#10004;  | 绑定时间 |
 | form_info  | json | &#10007;  | 填写表单信息 |
@@ -1320,13 +1346,21 @@ http://cf.lingxi360.com/p/LXE8G6B_tyG=GOAF?_default_donate_project=50585&_settin
 | outer_uid  | string | &#10007;  | 第三方用户id |
 
 
-## 定期捐扣款notify [POST]
+### 定期捐扣款notify
+
+- 请求方法：POST
+- 请求地址：用户设置的成功回调地址
+- 输入参数：如下
 
 ```bash
 同单次捐notify
 ```
 
-## 定期捐redirect[GET]
+### 定期捐redirect
+
+- 请求方法：GET
+- 请求地址：用户设置的支持者付款后跳转页面链接
+- 输入参数：如下
 
 ```bash
 同单次捐redirect
