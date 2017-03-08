@@ -2,3 +2,7 @@
 
 - api.apib
 - widget.apib
+
+### dev
+
+    npm run dev

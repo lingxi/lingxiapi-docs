@@ -605,47 +605,9 @@ _如何下载安装，具体参考链接文档_
               ]
             }
 
-## 查找 wechat_openid [/contact/query/wechat_openid]
+## 获取参与活动列表 [/contact/event/list]
 
-### 查找 wechat_openid [GET]
-
-| 名称   | 类型 |  必填  |  说明  |
-| :-- | :--: | :--: | :-- |
-| cid  | string | &#10004;  |  联系人 id  |
-
-+ Response 200
-
-  + Body
-
-
-            {
-              "wechat_openid": "o22Yxtw0NnD69pUhKRKFMhgcU8lY" // (string)
-            }
-
-## 查找 cid [/contact/query/cid]
-
-### 查找 cid [GET]
-
-| 名称   | 类型 |  必填  |  说明  |
-| :-- | :--: | :--: | :-- |
-| wechat_openid  | string | &#10004;  |  微信 openid  |
-
-+ Response 200
-
-  + Body
-
-
-            {
-              "cid": "ca2lo512p4q3yewvdkevdzgl8mknx7r9" // (string)
-            }
-
-# Data Structures
-
-# Group 活动
-
-## 活动列表 [/event/list]
-
-### 活动列表 [GET]
+### 获取参与活动列表 [GET]
 
 | 名称   | 类型 |  必填  |  说明  |
 | :-- | :--: | :--: | :-- |
@@ -693,6 +655,44 @@ _如何下载安装，具体参考链接文档_
                 "score": 2 // (int) 参与这次活动积分
               }
             }
+
+## 查找 wechat_openid [/contact/query/wechat_openid]
+
+### 查找 wechat_openid [GET]
+
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| cid  | string | &#10004;  |  联系人 id  |
+
++ Response 200
+
+  + Body
+
+
+            {
+              "wechat_openid": "o22Yxtw0NnD69pUhKRKFMhgcU8lY" // (string)
+            }
+
+## 查找 cid [/contact/query/cid]
+
+### 查找 cid [GET]
+
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| wechat_openid  | string | &#10004;  |  微信 openid  |
+
++ Response 200
+
+  + Body
+
+
+            {
+              "cid": "ca2lo512p4q3yewvdkevdzgl8mknx7r9" // (string)
+            }
+
+# Data Structures
+
+# Group 活动
 
 ## 单个活动信息 [/event/show]
 

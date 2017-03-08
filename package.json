@@ -5,6 +5,9 @@
   "repository": "git@github.com:LingxiTeam/lingxiapi-docs.git",
   "author": "RryLee <qq215672398@126.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "aglio -i api.apib -s --theme-template ./templates/index.jade --theme-style default --theme-style ./styles/rewrite.less"
+  },
   "dependencies": {
     "aglio": "^2.3.0",
     "cheerio": "^0.22.0"
