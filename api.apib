@@ -257,6 +257,61 @@ _如何下载安装，具体参考链接文档_
               }
             }
 
+## 创建联系人 [/contact/create]
+
+### 创建联系人 [POST]
+
+:::note
+创建字段对应关系：
+- `name` - 姓名
+- `nickname` - 昵称
+- `mobile` - 手机号
+- `email` - 邮箱
+- `gender` - 性别
+- `country` - 国家
+- `province` - 省份
+- `address` - 地址
+- `zip_code` - 邮编
+- `avatar` - 图像
+- `identity_id` - 身份证号
+- `birthday` - 生日
+- `home_address` - 家庭地址
+- `home_phone` - 固定电话
+- `qq` - qq
+- `weibo_name` - 微博名称
+- `weibo_link` - 微博主页
+- `org_name` - 单位名称
+- `org_position` - 所属职位
+- `org_department` - 单位所属部分
+- `org_phone` - 单位电话
+- `org_fax` - 单位传真
+- `wx_username` - 微信用户名
+- `wx_openid` - 微信 openid
+- `thirdparty_uid` - 第三方id
+- 以 `_meta_` 开头的 key 会被作为拓展字段处理
+- `tag_names` 类型是数组，添加标签，不存在就创建s
+:::
+
+:::warning
+- name, mobile, email 至少有一个字段
+- owned_user_mobile, owned_user_email 至少有一个，优先使用手机确认管理员信息
+:::
+
++ Response 200
+
+和创建联系人字段一致
+
+  + Body
+
+            {
+              "success" => true,
+              "cid" => "CFhsdjf8g7fg7sf6dgf675g544"
+            }
+
+## 更新联系人 [/contact/update]
+
+### 更新联系人 [PUT]
+
 ## 获取联系人参与全部项目 [/contact/cf_project/list]
 
 ### 参与全部项目 [GET]
