@@ -299,8 +299,6 @@ _如何下载安装，具体参考链接文档_
 
 + Response 200
 
-和创建联系人字段一致
-
   + Body
 
             {
@@ -311,6 +309,20 @@ _如何下载安装，具体参考链接文档_
 ## 更新联系人 [/contact/update]
 
 ### 更新联系人 [PUT]
+
+和创建联系人字段一致，差别在于
+
+- 不需要 name, mobile, email 至少一个字段
+
++ Response 200
+
+  + Body
+
+            {
+              "success" => true,
+              "cid" => "CFhsdjf8g7fg7sf6dgf675g544"
+            }
+
 
 ## 获取联系人参与全部项目 [/contact/cf_project/list]
 
