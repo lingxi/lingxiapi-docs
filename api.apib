@@ -45,7 +45,7 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 * 参数名ASCII码从小到大排序（字典序）；
 * 如果参数的值为空（或空数组）不参与签名；
 * 参数名区分大小写；
-* 验证调用返回或微信主动通知签名时，传送的signature参数不参与签名，将生成的签名与该signature参数值作校验。
+* 验证调用返回或主动通知签名时，传送的signature参数不参与签名，将生成的签名与该signature参数值作校验。
 * 接口可能会增加字段，验证签名时必须支持增加的扩展字段
 
 **获取 api_key 和 api_secret**
@@ -256,6 +256,73 @@ _如何下载安装，具体参考链接文档_
                 "sum_paid": "25.00" // (float) 联系人捐款总数
               }
             }
+
+## 创建联系人 [/contact/create]
+
+### 创建联系人 [POST]
+
+:::note
+创建字段对应关系：
+- `name` - 姓名
+- `nickname` - 昵称
+- `mobile` - 手机号
+- `email` - 邮箱
+- `gender` - 性别
+- `country` - 国家
+- `province` - 省份
+- `address` - 地址
+- `zip_code` - 邮编
+- `avatar` - 图像
+- `identity_id` - 身份证号
+- `birthday` - 生日
+- `home_address` - 家庭地址
+- `home_phone` - 固定电话
+- `qq` - qq
+- `weibo_name` - 微博名称
+- `weibo_link` - 微博主页
+- `org_name` - 单位名称
+- `org_position` - 所属职位
+- `org_department` - 单位所属部分
+- `org_phone` - 单位电话
+- `org_fax` - 单位传真
+- `wx_username` - 微信用户名
+- `wx_openid` - 微信 openid
+- `thirdparty_uid` - 第三方id
+- 以 `_meta_` 开头的 key 会被作为拓展字段处理
+- `tag_names` 类型是数组，添加标签，不存在就创建s
+:::
+
+:::warning
+- name, mobile, email 至少有一个字段
+- owned_user_mobile, owned_user_email 至少有一个，优先使用手机确认管理员信息
+:::
+
++ Response 200
+
+  + Body
+
+            {
+              "success" => true,
+              "cid" => "CFhsdjf8g7fg7sf6dgf675g544"
+            }
+
+## 更新联系人 [/contact/update]
+
+### 更新联系人 [PUT]
+
+和创建联系人字段一致，差别在于
+
+- 不需要 name, mobile, email 至少一个字段
+
++ Response 200
+
+  + Body
+
+            {
+              "success" => true,
+              "cid" => "CFhsdjf8g7fg7sf6dgf675g544"
+            }
+
 
 ## 获取联系人参与全部项目 [/contact/cf_project/list]
 
