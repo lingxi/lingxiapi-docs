@@ -87,7 +87,7 @@ GITHUB_FILE_PATH: http://github.com/rrylee
 
 **返回数据格式**
 
-> 请求单个数据接口
+> [GET] 请求单个数据接口
 
 ```json
 {
@@ -100,6 +100,19 @@ GITHUB_FILE_PATH: http://github.com/rrylee
   }
 }
 ```
+
+> [POST] 请求创建更新数据
+
+
+```json
+{
+  "data": {
+
+  }
+}
+```
+
+每个接口具体数据在 data 里面
 
 > 统计数据
 
@@ -149,6 +162,32 @@ _如何下载安装，具体参考链接文档_
 
 - node [链接](https://github.com/RryLee/node-signature-authenticator)
 
+## 开发者技巧
+
+**by_column 表单式**
+
+引入 by_column 表单式，在获取资源全部数据的时候，拓展出更大的操作空间，表达式结构为
+
+```
+filed|operator|value
+```
+
+`filed` 为字段名称，`operator` 为操作符号，可选：
+- `eq` - =
+- `ne` - <>
+- `gt` - >
+- `gte` - >=
+- `lt` - <
+- `lte` - <=
+- `like` - LIKE
+
+
+加入要获取手机号为 13122222222 的联系人，表达式为：
+
+```
+    mobile|eq|13122222222
+```
+
 # Data Structures
 
 # Group 测试接口
@@ -187,6 +226,18 @@ _如何下载安装，具体参考链接文档_
 # Data Structures
 
 # Group 联系人
+
+## 获取单个联系人 [/contact/list]
+
+### 全部联系人 [GET]
+
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| order_by | string | &#10007; | `cid`, `create_time`, `update_time`, 填表次数-`form_submit_count` |
+|  with  | string |  &#10007;  |  企业-`org`, 附件-`attachments`, 活动统计-`statistics_event`, 捐款统计-`statistics_donate` |
+| by_column | string | &#10007; | 可用字段 `mobile` |
+
+> 参考 [by_column 表达式](#header-开发者技巧)
 
 ## 获取单个联系人 [/contact/show]
 
@@ -228,6 +279,7 @@ _如何下载安装，具体参考链接文档_
               "create_time": 1403447755, // (int) 创建时间
               "update_time": 1427448819, // (int) 更新时间
               "constellation": 0, // (int) 星座
+              "form_submit_count": 12, (int) 填写表单次数
               "member": "", // (string)
               "member_donate_count": 0, // (int)
               "member_donate_sum": 0, // (int)
@@ -1221,6 +1273,31 @@ _如何下载安装，具体参考链接文档_
 ```bash
 同上
 ```
+
+## 创建表单填写信息 [/form/form_fill/create]
+
+## 同步表单填写信息 [POST]
+
+| 名称   | 类型 |  必填  |  说明  |
+| :-- | :--: | :--: | :-- |
+| form_id | string |  &#10004;  |  表单 id  |
+| cid | string | &#10004; | 联系人 id |
+| data | array | &#10004; | 数据 |
+| openid | string | &#10007; | 微信 openid |
+| ip | string | &#10007; | 填表 ip |
+| browser_user_agent | string | &#10007; | browser_user_agent |
+| browser_referer | string | &#10007; | browser_referer |
+
++ Response
+
+  + Body
+
+
+            {
+              "success" => true,
+              "formfill_id" => "ca52k7n48lw9g1dpgg533dvqpmoxzr3y"
+            }
+
 
 # Data Structures
 
